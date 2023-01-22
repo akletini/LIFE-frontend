@@ -1,13 +1,9 @@
 <template>
-    <div>
-        <p>Todo page</p>
-    </div>
+  <div>
+    <p>Todo page</p>
+  </div>
 </template>
 
-<script setup>
+<script setup setup></script>
 
-</script>
-
-<style scoped>
-
-</style>
+<style scoped></style>
