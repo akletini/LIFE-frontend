@@ -1,5 +1,5 @@
 <template>
-  <div class="w-64 bg-gray-700 border-r border-gray-200 resize-x">
+  <div class="bg-gray-700 border-r border-gray-200">
     <div class="py-4 text-center mb-8">
       <NuxtLink to="/" class="font-bold text-green-600 text-xl"
         >LIFE App</NuxtLink
