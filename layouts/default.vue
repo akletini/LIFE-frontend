@@ -67,13 +67,14 @@
 <script setup>
 import { ref } from "vue";
 let isSidebarOpen = ref(true);
-let resizeValue = ref(20);
+let resizeValue = ref(15);
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value;
 }
 
-function onMouseDown() {
+function onMouseDown(e) {
+  e.preventDefault();
   document.addEventListener("mousemove", onMouseMove);
 }
 function onMouseUp() {

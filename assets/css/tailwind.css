@@ -15,4 +15,8 @@ body {
   .sidebar-entry-root {
     @apply mb-2 text-lg text-white uppercase tracking-widest text-center hover:text-green-600 hover:shadow-lg;
   }
+
+  .todo-entry {
+    @apply grid grid-cols-7 gap-4 rounded-none border border-white border-spacing-y-12 mb-6 px-4;
+  }
 }
