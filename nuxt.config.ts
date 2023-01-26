@@ -3,7 +3,7 @@ export default defineNuxtConfig({
     build: {
         transpile: ['@headlessui/vue', '@headlessui/tailwindcss']
     },
-    modules: ['@nuxtjs/tailwindcss'],
+    modules: ['@nuxtjs/tailwindcss', '@nuxtjs/device'],
     app: {
         head: {
             title: "LIFE",

@@ -11,7 +11,7 @@
         />
       </Transition>
       <div
-        class="resizer"
+        class="resizer flex"
         v-if="isSidebarOpen"
         @linkClicked="toggleSidebar"
         @mousedown="onMouseDown"
@@ -27,7 +27,7 @@
           width: 100 - resizeValue + '%',
         }"
       >
-        <header class="shadow-sm bg-gray-700">
+        <header class="shadow-sm bg-gray-700 min-w-full">
           <nav class="p-3 flex justify-between px-6">
             <div>
               <div v-if="!isSidebarOpen">
@@ -66,8 +66,10 @@
 
 <script setup>
 import { ref } from "vue";
+const deviceType = useDevice();
+
 let isSidebarOpen = ref(true);
-let resizeValue = ref(15);
+let resizeValue = ref(deviceType.isMobileOrTablet ? 25 : 20);
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value;
@@ -111,13 +113,11 @@ function onMouseMove(e) {
 }
 
 .resizer {
-  height: 100vh;
+  height: calc(100%);
   width: 6px;
   background: #fff;
   transform: translateX(-3px);
   position: absolute;
-  top: 0;
-  z-index: 1;
   cursor: ew-resize;
 }
 
@@ -128,7 +128,7 @@ function onMouseMove(e) {
   left: 50%;
   transform: translateX(-50%);
   width: 1px;
-  height: 100%;
+  min-height: 100%;
   background-color: #eee;
   transition: background-color 250ms, box-shadow 250ms;
 }

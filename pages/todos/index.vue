@@ -22,37 +22,43 @@
       <div
         class="grid grid-cols-1 grid-rows-8 md:mb-6 lg:grid-cols-4 lg:grid-rows-1 xl:grid-cols-6 2xl:grid-cols-8"
       >
-        <div
-          class="xl:col-span-2 xl:row-start-1 xl:row-end-1 2xl:col-span-4"
-        ></div>
+        <div class="xl:col-span-2 xl:row-start-1 xl:row-end-1 2xl:col-span-4">
+          <!-- empty div for spacing -->
+        </div>
         <button class="border row-span-2 py-3 lg:row-start-1 lg:row-end-1">
           New tag
         </button>
         <div
-          class="flex gap-4 row-span-2 lg:row-start-1 lg:row-end-1 row py-3 justify-center"
+          class="flex gap-4 row-span-2 lg:row-start-1 lg:row-end-1 py-3 justify-left lg:justify-center"
         >
-          <p>Tags:</p>
-          <select class="text-black text-center" v-model="tagSelection">
+          <p>
+            Tags:
+          </p>
+          <select class="filter-dropdown" v-model="tagSelection">
             <option value="alpha">Alpha</option>
             <option value="beta">Beta</option>
             <option value="gamma">Gamma</option>
           </select>
         </div>
         <div
-          class="flex gap-4 row-span-2 py-3 justify-center lg:row-start-1 lg:row-end-1"
+          class="flex gap-4 row-span-2 py-3 justify-left lg:row-start-1 lg:row-end-1 lg:justify-center"
         >
-          <p>Filter:</p>
-          <select class="text-black text-center" v-model="filterSelection">
+          <p>
+            Filter:
+          </p>
+          <select class="filter-dropdown" v-model="filterSelection">
             <option value="active">Active</option>
             <option value="completed">Completed</option>
             <option value="due">Is due</option>
           </select>
         </div>
         <div
-          class="flex gap-4 row-span-2 py-3 justify-center lg:row-start-1 lg:row-end-1"
+          class="flex gap-4 row-span-2 py-3 justify-center lg:row-start-1 lg:row-end-1 lg:justify-center"
         >
-          <p>Sort:</p>
-          <select class="text-black text-center" v-model="sortSelection">
+          <p>
+            Sort:
+          </p>
+          <select class="filter-dropdown" v-model="sortSelection">
             <option value="added">Added date</option>
             <option value="due">Is due</option>
           </select>
@@ -62,20 +68,28 @@
       <!-- Todo list -->
       <div class="py-4">
         <ul class="todo-entry">
-          <li class="flex items-center text-lg px-8 col-span-4">
+          <li
+            class="flex items-center text-lg justify-center sm:justify-start px-8 sm:col-span-4"
+          >
             Irgendwas zu tun
           </li>
-          <li class="text-center flex items-center justify-center">
+          <li
+            class="row-start-2 row-end-2 col-start-1 col-end-1 text-center flex items-center justify-center lg:row-span-1 lg:row-start-1 lg-row-end-1 lg:col-start-5 lg:col-end-5"
+          >
             <span class="rounded-lg py-2 px-3 bg-blue-800">Tag</span>
           </li>
-          <li class="flex items-center justify-center">
+          <li
+            class="flex items-center justify-center row-start-3 row-end-3 sm:row-start-2 sm:row-end-2 sm:col-start-2 sm:col-end-2 lg:row-span-1 lg:row-start-1 lg-row-end-1 lg:col-start-6 lg:col-end-6"
+          >
             <span
               class="flex items-center gap-2 border rounded-lg text-center py-1 px-2 bg-white text-red-500 border-red-500"
               ><i class="material-icons text-lg">hourglass_bottom</i>
               <p class="">11.11.2023</p></span
             >
           </li>
-          <li class="">
+          <li
+            class="sm:col-start-3 sm:col-end-3 row-start-4 row-end-4 sm:row-start-2 sm:row-end-2 lg:row-start-1 lg-row-end-1 lg:col-start-7 lg:col-end-7"
+          >
             <div class="flex justify-center gap-4 px-2">
               <i class="material-icons text-green-500">done</i>
               <i class="material-icons text-blue-500">edit</i>

@@ -16,7 +16,11 @@ body {
     @apply mb-2 text-lg text-white uppercase tracking-widest text-center hover:text-green-600 hover:shadow-lg;
   }
 
+  .filter-dropdown {
+    @apply text-black text-center rounded-md flex flex-grow lg:flex-none lg:flex-grow-0;
+  }
+
   .todo-entry {
-    @apply grid grid-cols-7 grid-rows-2 lg:grid-rows-1 gap-4 rounded-none border border-white border-spacing-y-12 mb-6 px-4;
+    @apply grid grid-cols-1 grid-rows-4 sm:grid-cols-3 sm:grid-rows-2 lg:grid-cols-7 lg:grid-rows-1 gap-4 rounded-none border border-white mb-6 px-4;
   }
 }
