@@ -6,11 +6,13 @@
         <div class="grid grid-cols-5 gap-3 h-10">
           <input
             type="text"
-            class="text-black text-lg col-span-3"
+            class="text-black text-lg col-span-3 rounded-lg"
             placeholder="Add new..."
           />
-          <input type="date" class="datepicker text-black" />
-          <button type="submit" class="bg-gray-50 text-black">Add</button>
+          <input type="date" class="datepicker text-black rounded-lg" />
+          <button type="submit" class="bg-gray-50 text-black rounded-lg">
+            Add
+          </button>
         </div>
       </div>
       <!-- Horizonal divider -->
@@ -60,11 +62,29 @@
       <!-- Todo list -->
       <div class="py-4">
         <ul class="todo-entry">
-          <li class="px-8 col-span-4">Irgendwas zu tun</li>
-          <li>Tag</li>
-          <li>Due date</li>
-          <li>
-            <div>alles mögliche</div>
+          <li class="flex items-center text-lg px-8 col-span-4">
+            Irgendwas zu tun
+          </li>
+          <li class="text-center flex items-center justify-center">
+            <span class="rounded-lg py-2 px-3 bg-blue-800">Tag</span>
+          </li>
+          <li class="flex items-center justify-center">
+            <span
+              class="flex items-center gap-2 border rounded-lg text-center py-1 px-2 bg-white text-red-500 border-red-500"
+              ><i class="material-icons text-lg">hourglass_bottom</i>
+              <p class="">11.11.2023</p></span
+            >
+          </li>
+          <li class="">
+            <div class="flex justify-center gap-4 px-2">
+              <i class="material-icons text-green-500">done</i>
+              <i class="material-icons text-blue-500">edit</i>
+              <i class="material-icons text-red-500">delete</i>
+            </div>
+            <div class="flex justify-center items-center">
+              <i class="material-icons text-lg mr-2">info</i>
+              <p class="underline text-xs">19.09.2021 13:59:37</p>
+            </div>
           </li>
         </ul>
         <ul class="todo-entry">

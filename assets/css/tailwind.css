@@ -17,6 +17,6 @@ body {
   }
 
   .todo-entry {
-    @apply grid grid-cols-7 gap-4 rounded-none border border-white border-spacing-y-12 mb-6 px-4;
+    @apply grid grid-cols-7 grid-rows-2 lg:grid-rows-1 gap-4 rounded-none border border-white border-spacing-y-12 mb-6 px-4;
   }
 }
