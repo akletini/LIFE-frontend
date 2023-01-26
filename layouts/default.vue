@@ -65,11 +65,10 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 const deviceType = useDevice();
 
 let isSidebarOpen = ref(true);
-let resizeValue = ref(deviceType.isMobileOrTablet ? 25 : 20);
+let resizeValue = ref(deviceType.isMobileOrTablet ? 25 : 15);
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value;

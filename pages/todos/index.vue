@@ -31,9 +31,7 @@
         <div
           class="flex gap-4 row-span-2 lg:row-start-1 lg:row-end-1 py-3 justify-left lg:justify-center"
         >
-          <p>
-            Tags:
-          </p>
+          <p>Tags:</p>
           <select class="filter-dropdown" v-model="tagSelection">
             <option value="alpha">Alpha</option>
             <option value="beta">Beta</option>
@@ -43,9 +41,7 @@
         <div
           class="flex gap-4 row-span-2 py-3 justify-left lg:row-start-1 lg:row-end-1 lg:justify-center"
         >
-          <p>
-            Filter:
-          </p>
+          <p>Filter:</p>
           <select class="filter-dropdown" v-model="filterSelection">
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -55,9 +51,7 @@
         <div
           class="flex gap-4 row-span-2 py-3 justify-center lg:row-start-1 lg:row-end-1 lg:justify-center"
         >
-          <p>
-            Sort:
-          </p>
+          <p>Sort:</p>
           <select class="filter-dropdown" v-model="sortSelection">
             <option value="added">Added date</option>
             <option value="due">Is due</option>
@@ -115,8 +109,6 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-
 const tagSelection = ref("alpha");
 const filterSelection = ref("active");
 const sortSelection = ref("due");
