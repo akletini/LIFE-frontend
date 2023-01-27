@@ -1,36 +1,38 @@
 export class Tag {
-    private id?: number | undefined;
-    private name: string;
-    private color: string;
-    
-    constructor(name: string, color: string) {
-        this.name = name;
-        this.color = color;
-    }
+  private _id?: number | undefined;
+  private _name?: string;
+  private _color?: string;
 
-    public get getId(): number | undefined {
-        return this.id;
-    }
+  constructor(name: string, color: string, id?: number);
+  constructor(name: string, color: string, id: number) {
+    this._name = name;
+    this._color = color;
+    this._id = id;
+  }
 
-    public set setId(value: number | undefined) {
-        this.id = value;
-    }
+  public get id(): number | undefined {
+    return this._id;
+  }
 
-    public get getName(): string {
-        return this.name;
-    }
+  public set id(value: number | undefined) {
+    this._id = value;
+  }
 
-    public set setName(value: string) {
-        this.name = value;
-    }
+  public get name(): string | undefined {
+    return this._name;
+  }
 
-    public get getColor(): string {
-        return this.color;
-    }
+  public set name(value: string | undefined) {
+    this._name = value;
+  }
 
-    public set setColor(value: string) {
-        this.color = value;
-    }
+  public get color(): string | undefined {
+    return this._color;
+  }
+
+  public set color(value: string | undefined) {
+    this._color = value;
+  }
 }
 
-export default Tag
+export default Tag;

@@ -63,9 +63,12 @@
 
 <script setup lang="ts">
 import Tag from "~~/models/todo/tag";
-import Todo from "../../models/todo/todo";
+import Todo from "~~/models/todo/todo";
+import DateUtils from '../../utils/DateUtils';
 
-const { id } = useRoute().params;
+const dateUtils : DateUtils = new DateUtils();
+
+// const { id } = useRoute().params;
 const title = ref("");
 const dueAt = ref("");
 const description = ref("");
@@ -74,15 +77,14 @@ const tag = ref("");
 
 function formSubmit() {
   const todo: Todo = new Todo(
-    -1,
     title.value,
+    dateUtils.getCurrentDate(),
+    dateUtils.getGermanDate(dueAt.value),
+    Todo.State.OPEN,
     description.value,
-    new Date(Date.now()),
-    new Date(dueAt.value),
-    new Tag("Hans", "Peter"),
-    Todo.State.OPEN
+    new Tag("Hans", "Peter")
   );
-  console.log(todo);
+  console.log(JSON.stringify(todo));
 }
 </script>
 

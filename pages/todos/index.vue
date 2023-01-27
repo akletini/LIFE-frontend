@@ -1,19 +1,28 @@
+import Todo from '../../models/todo/todo';
 <template>
   <div>
     <div class="flex-row">
       <h3 class="text-center text-4xl py-4 font-bold mb-4">Todo page</h3>
       <div class="mb-6">
-        <div class="grid grid-cols-5 gap-3 h-10">
-          <input
-            type="text"
-            class="text-black text-lg col-span-3 rounded-lg"
-            placeholder="Add new..."
-          />
-          <input type="date" class="datepicker text-black rounded-lg" />
-          <button type="submit" class="bg-gray-50 text-black rounded-lg">
-            Add
-          </button>
-        </div>
+        <form @submit.prevent="addTodo">
+          <div class="grid grid-cols-5 gap-3 h-10">
+            <input
+              type="text"
+              class="text-black text-lg col-span-3 rounded-lg"
+              placeholder="&ensp; Add new..."
+              v-model="title"
+              required
+            />
+            <input
+              type="date"
+              class="datepicker text-black rounded-lg"
+              v-model="dueAt"
+            />
+            <button type="submit" class="bg-gray-50 text-black rounded-lg">
+              Add
+            </button>
+          </div>
+        </form>
       </div>
       <!-- Horizonal divider -->
       <div class="flex-grow border-t border-gray-400 mb-4"></div>
@@ -25,9 +34,12 @@
         <div class="xl:col-span-2 xl:row-start-1 xl:row-end-1 2xl:col-span-4">
           <!-- empty div for spacing -->
         </div>
-        <button class="border row-span-2 py-3 lg:row-start-1 lg:row-end-1">
-          New tag
-        </button>
+        <NuxtLink
+          to="/todos/tags/newTag"
+          class="border row-span-2 py-3 lg:row-start-1 lg:row-end-1 flex justify-center"
+        >
+          <button>New Tag</button>
+        </NuxtLink>
         <div
           class="flex gap-4 row-span-2 lg:row-start-1 lg:row-end-1 py-3 justify-left lg:justify-center"
         >
@@ -61,16 +73,20 @@
 
       <!-- Todo list -->
       <div class="py-4">
-        <ul class="todo-entry">
+        <ul class="todo-entry" v-for="todo in todoList" :key="todo.id">
           <li
             class="flex items-center text-lg justify-center sm:justify-start px-8 sm:col-span-4"
           >
-            Irgendwas zu tun
+            <NuxtLink :to="'/todos/_' + todo.id">{{ todo.title }}</NuxtLink>
           </li>
           <li
             class="row-start-2 row-end-2 col-start-1 col-end-1 text-center flex items-center justify-center lg:row-span-1 lg:row-start-1 lg-row-end-1 lg:col-start-5 lg:col-end-5"
           >
-            <span class="rounded-lg py-2 px-3 bg-blue-800">Tag</span>
+            <NuxtLink :to="'/todos/tags/_' + todo.tag?.id"
+              ><span class="rounded-lg py-2 px-3 bg-blue-800">
+                {{ todo.tag?.name }}</span
+              ></NuxtLink
+            >
           </li>
           <li
             class="flex items-center justify-center row-start-3 row-end-3 sm:row-start-2 sm:row-end-2 sm:col-start-2 sm:col-end-2 lg:row-span-1 lg:row-start-1 lg-row-end-1 lg:col-start-6 lg:col-end-6"
@@ -78,29 +94,27 @@
             <span
               class="flex items-center gap-2 border rounded-lg text-center py-1 px-2 bg-white text-red-500 border-red-500"
               ><i class="material-icons text-lg">hourglass_bottom</i>
-              <p class="">11.11.2023</p></span
+              <p class="">{{ todo.dueAt }}</p></span
             >
           </li>
           <li
             class="sm:col-start-3 sm:col-end-3 row-start-4 row-end-4 sm:row-start-2 sm:row-end-2 lg:row-start-1 lg-row-end-1 lg:col-start-7 lg:col-end-7"
           >
             <div class="flex justify-center gap-4 px-2">
-              <i class="material-icons text-green-500">done</i>
-              <i class="material-icons text-blue-500">edit</i>
-              <i class="material-icons text-red-500">delete</i>
+              <i
+                class="material-icons text-green-500 cursor-pointer"
+                @click="completeTodo"
+                >done</i
+              >
+              <i class="material-icons text-blue-500 cursor-pointer">edit</i>
+              <i class="material-icons text-red-500 cursor-pointer">delete</i>
             </div>
-            <div class="flex justify-center items-center">
+            <div class="flex justify-center items-center cursor-help">
               <i class="material-icons text-lg mr-2">info</i>
-              <p class="underline text-xs">19.09.2021 13:59:37</p>
+              <p class="underline text-xs">
+                {{ todo.createdAt }}
+              </p>
             </div>
-          </li>
-        </ul>
-        <ul class="todo-entry">
-          <li class="px-8 col-span-4">Irgendwas zu tun</li>
-          <li>Tag</li>
-          <li>Due date</li>
-          <li>
-            <div>alles mögliche</div>
           </li>
         </ul>
       </div>
@@ -108,10 +122,53 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import Todo from "~~/models/todo/todo";
+import TodoService from "~~/services/todo/TodoService;
+import DateUtils from "../../utils/DateUtils";
+import Tag from "../../models/todo/tag";
+
+const dateUtils: DateUtils = new DateUtils();
 const tagSelection = ref("alpha");
 const filterSelection = ref("active");
 const sortSelection = ref("due");
+
+/* Dummy objects */
+const title = ref("");
+const dueAt = ref("2023-01-01");
+const testTodo: Todo = new Todo(
+  "Ein Todo",
+  dateUtils.getCurrentDateTime(),
+  dateUtils.getGermanDate(dueAt.value),
+  Todo.State.OPEN
+);
+const testTag: Tag = new Tag("Uni", "#1e40af", 2);
+testTodo.id = 3;
+testTodo.tag = testTag;
+
+const todoArray: Todo[] = [testTodo];
+const todoList = ref(todoArray);
+
+function addTodo() {
+  debugger;
+  let todo: Todo = new Todo(
+    title.value,
+    dateUtils.getCurrentDateTime(),
+    dateUtils.getGermanDate(dueAt.value),
+    Todo.State.OPEN
+  );
+  console.log(
+    "Created todo: " +
+      JSON.stringify(todo, (k, v) => (v === undefined ? null : v))
+  );
+  todoList.value.push(todo);
+  let todoService: TodoService = new TodoService();
+  todoService.addTodo(todo);
+}
+
+function completeTodo() {
+  console.log("DONE");
+}
 </script>
 
 <style scoped>
