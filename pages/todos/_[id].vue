@@ -1,8 +1,12 @@
 <template>
   <div class="px-10">
-    <h3 class="text-center text-4xl py-4 font-bold mb-4">
-      <NuxtLink to="/todos">Edit Todo</NuxtLink>
-    </h3>
+    <div class="flex items-center justify-between mb-4">
+      <NuxtLink to="/todos"
+        ><i class="material-icons text-lg sm:text-4xl">arrow_back</i></NuxtLink
+      >
+      <h3 class="text-center text-lg sm:text-4xl py-4 font-bold">Edit Todo</h3>
+      <div></div>
+    </div>
 
     <form @submit.prevent="formSubmit">
       <div class="flex flex-col">
@@ -64,9 +68,9 @@
 <script setup lang="ts">
 import Tag from "~~/models/todo/tag";
 import Todo from "~~/models/todo/todo";
-import DateUtils from '../../utils/DateUtils';
+import DateUtils from "../../utils/DateUtils";
 
-const dateUtils : DateUtils = new DateUtils();
+const dateUtils: DateUtils = new DateUtils();
 
 // const { id } = useRoute().params;
 const title = ref("");

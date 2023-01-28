@@ -124,7 +124,7 @@ import Todo from '../../models/todo/todo';
 
 <script setup lang="ts">
 import Todo from "~~/models/todo/todo";
-import TodoService from "~~/services/todo/TodoService;
+import TodoService from "~~/services/todo/TodoService";
 import DateUtils from "../../utils/DateUtils";
 import Tag from "../../models/todo/tag";
 
@@ -145,6 +145,7 @@ const testTodo: Todo = new Todo(
 const testTag: Tag = new Tag("Uni", "#1e40af", 2);
 testTodo.id = 3;
 testTodo.tag = testTag;
+console.log(JSON.stringify(testTodo, (k, v) => (v === undefined ? null : v)));
 
 const todoArray: Todo[] = [testTodo];
 const todoList = ref(todoArray);

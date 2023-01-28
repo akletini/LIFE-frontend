@@ -4,7 +4,7 @@
       <NuxtLink to="/todos"
         ><i class="material-icons text-lg sm:text-4xl">arrow_back</i></NuxtLink
       >
-      <h3 class="text-center text-lg sm:text-4xl py-4 font-bold">New Tag</h3>
+      <h3 class="text-center text-lg sm:text-4xl py-4 font-bold">Edit Tag</h3>
       <div></div>
     </div>
 
