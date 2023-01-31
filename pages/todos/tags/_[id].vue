@@ -41,14 +41,23 @@
 
 <script setup lang="ts">
 import Tag from "~~/models/todo/tag";
+import { useTagStore } from "../../../stores/todo/TagStore";
+import { useTodoStore } from "../../../stores/todo/TodoStore";
 
-// const { id } = useRoute().params;
-const name = ref("");
-const color = ref("#000000");
+const tagStore = useTagStore();
+const todoStore = useTodoStore();
+const router = useRouter();
+const { id } = useRoute().params;
+const currentTag = tagStore.getById(Number(id));
+const name = ref(currentTag?.name);
+const color = ref(currentTag?.color);
 
 function formSubmit() {
-  const tag: Tag = new Tag(name.value, color.value);
+  const tag: Tag = new Tag(name.value, color.value, Number(id));
+  tagStore.update(tag);
+  todoStore.updateTagReferences(tag);
   console.log(tag);
+  router.push("/todos");
 }
 </script>
 

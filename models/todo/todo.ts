@@ -33,6 +33,15 @@ export class Todo {
     description?: string,
     tag?: Tag,
     id?: number
+  );
+  constructor(
+    title?: string,
+    createdAt?: string,
+    dueAt?: string,
+    state?: Todo.State,
+    description?: string,
+    tag?: Tag,
+    id?: number
   ) {
     this.id = id;
     this.title = title;

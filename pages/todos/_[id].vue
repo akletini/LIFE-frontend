@@ -36,14 +36,17 @@
             type="text"
             id="description"
             class="form-textarea text-black text-xl"
-            v-model="description"
+            :v-model="description"
           ></textarea>
         </div>
 
         <div class="flex flex-col mb-8">
           <label for="tag">Tag</label>
           <select type="text" id="tag" class="filter-dropdown" v-model="tag">
-            <option value="alpha">Alpha</option>
+            <option value="empty">&nbsp;</option>
+            <option :value="tag.name" v-for="tag in tagList" :key="tag.id">
+              {{ tag.name }}
+            </option>
           </select>
         </div>
 
@@ -69,26 +72,41 @@
 import Tag from "~~/models/todo/tag";
 import Todo from "~~/models/todo/todo";
 import DateUtils from "../../utils/DateUtils";
+import { useTodoStore } from "../../stores/todo/TodoStore";
+import { useTagStore } from "../../stores/todo/TagStore";
 
 const dateUtils: DateUtils = new DateUtils();
+const todoStore = useTodoStore();
+const tagStore = useTagStore();
+const router = useRouter();
 
-// const { id } = useRoute().params;
-const title = ref("");
-const dueAt = ref("");
-const description = ref("");
-const tag = ref("");
+const { id } = useRoute().params;
+const parsedId = Array.isArray(id) ? Number(id[0]) : Number(id);
+
+const currentTodo = todoStore.getById(parsedId);
+const title = ref(currentTodo?.title);
+const dueAt = ref(dateUtils.getDateForDatepicker(currentTodo?.dueAt));
+const description = ref(currentTodo?.description || "");
+const tag = ref(currentTodo?.tag?.name);
+const tagArray: Tag[] = tagStore.getAll();
+const tagList = ref(tagArray);
 // const file = ref("")
 
 function formSubmit() {
+  const selectedTag = tagStore.getByName(String(tag.value));
   const todo: Todo = new Todo(
-    title.value,
+    String(title.value),
     dateUtils.getCurrentDate(),
-    dateUtils.getGermanDate(dueAt.value),
+    dateUtils.getGermanDate(String(dueAt.value)),
     Todo.State.OPEN,
-    description.value,
-    new Tag("Hans", "Peter")
+    String(description.value),
+    selectedTag,
+    parsedId
   );
+  debugger;
+  todoStore.update(todo);
   console.log(JSON.stringify(todo));
+  router.push("/todos");
 }
 </script>
 

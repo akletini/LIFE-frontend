@@ -14,7 +14,21 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@nuxtjs/device",
     "@nathanchase/nuxt-dayjs-module",
+    [
+      "@pinia/nuxt",
+      {
+        autoImports: [
+          // automatically imports `defineStore`
+          "defineStore", // import { defineStore } from 'pinia'
+          // automatically imports `defineStore` as `definePiniaStore`
+          ["defineStore", "definePiniaStore"], // import { defineStore as definePiniaStore } from 'pinia'
+        ],
+      },
+    ],
   ],
+  imports: {
+    dirs: ["stores"],
+  },
   app: {
     head: {
       title: "LIFE",

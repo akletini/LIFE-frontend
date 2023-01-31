@@ -28,7 +28,10 @@ export class TagService {
       })
       .then((result) => {
         tag = result;
-      });
+      })
+      .catch((error) =>
+        console.error("Error happened on server for addTag()", error)
+      );
 
     return tag;
   }

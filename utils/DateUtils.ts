@@ -21,12 +21,26 @@ export class DateUtils {
     return this.getGermanDateTime(date);
   }
 
+  public getDateForDatepicker(date?: string) {
+    if (date == undefined) {
+      return dayjs(new Date(Date.now())).format("YYYY-MM-DD");
+    }
+    date = this.germanDateToDatePicker(date);
+    return dayjs(date, DateUtils.dateFormat).format("YYYY-MM-DD");
+  }
+
   public getGermanDate(date: string) {
     return dayjs(date).format(DateUtils.dateFormat);
   }
 
   private getGermanDateTime(date: string) {
     return dayjs(date).format(DateUtils.dateTimeFormat);
+  }
+
+  private germanDateToDatePicker(date: string) {
+    let components = date.split(".");
+    components = components.reverse();
+    return components[0] + "-" + components[1] + "-" + components[2];
   }
 }
 

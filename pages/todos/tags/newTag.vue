@@ -41,8 +41,10 @@
 <script setup lang="ts">
 import Tag from "~~/models/todo/tag";
 import TagService from "../../../services/todo/TagService";
+import { useTagStore } from "../../../stores/todo/TagStore";
 
 const tagService: TagService = new TagService();
+const tagStore = useTagStore();
 // const { id } = useRoute().params;
 const router = useRouter();
 const name = ref("");
@@ -51,6 +53,9 @@ const color = ref("#000000");
 async function formSubmit() {
   let tag: Tag = new Tag(name.value, color.value);
   tag = await tagService.addTag(tag);
+  if (tag.id != undefined) {
+    tagStore.add(tag);
+  }
   console.log(tag);
   router.push("/todos");
 }
