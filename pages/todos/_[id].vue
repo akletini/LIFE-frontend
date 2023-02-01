@@ -74,8 +74,10 @@ import Todo from "~~/models/todo/todo";
 import DateUtils from "../../utils/DateUtils";
 import { useTodoStore } from "../../stores/todo/TodoStore";
 import { useTagStore } from "../../stores/todo/TagStore";
+import TodoService from "../../services/todo/TodoService";
 
 const dateUtils: DateUtils = new DateUtils();
+const todoService: TodoService = new TodoService();
 const todoStore = useTodoStore();
 const tagStore = useTagStore();
 const router = useRouter();
@@ -92,9 +94,10 @@ const tagArray: Tag[] = tagStore.getAll();
 const tagList = ref(tagArray);
 // const file = ref("")
 
-function formSubmit() {
+async function formSubmit() {
+  debugger;
   const selectedTag = tagStore.getByName(String(tag.value));
-  const todo: Todo = new Todo(
+  let todo: Todo = new Todo(
     String(title.value),
     dateUtils.getCurrentDate(),
     dateUtils.getGermanDate(String(dueAt.value)),
@@ -103,8 +106,9 @@ function formSubmit() {
     selectedTag,
     parsedId
   );
-  debugger;
+  todo = await todoService.updateTodo(todo);
   todoStore.update(todo);
+
   console.log(JSON.stringify(todo));
   router.push("/todos");
 }

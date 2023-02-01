@@ -43,20 +43,22 @@
 import Tag from "~~/models/todo/tag";
 import { useTagStore } from "../../../stores/todo/TagStore";
 import { useTodoStore } from "../../../stores/todo/TodoStore";
+import TagService from "~~/services/todo/TagService";
 
 const tagStore = useTagStore();
 const todoStore = useTodoStore();
+const tagService: TagService = new TagService();
 const router = useRouter();
 const { id } = useRoute().params;
 const currentTag = tagStore.getById(Number(id));
 const name = ref(currentTag?.name);
 const color = ref(currentTag?.color);
 
-function formSubmit() {
-  const tag: Tag = new Tag(name.value, color.value, Number(id));
+async function formSubmit() {
+  let tag: Tag = new Tag(name.value, color.value, Number(id));
+  tag = await tagService.updateTag(tag);
   tagStore.update(tag);
   todoStore.updateTagReferences(tag);
-  console.log(tag);
   router.push("/todos");
 }
 </script>

@@ -45,8 +45,14 @@ import Todo from '../../models/todo/todo';
         >
           <p>Tags:</p>
           <select class="filter-dropdown" v-model="tagSelection">
-            <option value="empty">&nbsp;</option>
-            <option :value="tag.name" v-for="tag in tagList" :key="tag.id">
+            <option value="empty">&emsp;</option>
+            <option
+              class="text-white"
+              :style="{ 'background-color': tag.color }"
+              :value="tag.name"
+              v-for="tag in tagList"
+              :key="tag.id"
+            >
               {{ tag.name }}
             </option>
           </select>
@@ -108,7 +114,7 @@ import Todo from '../../models/todo/todo';
             <div class="flex justify-center gap-4 px-2">
               <i
                 class="material-icons text-green-500 cursor-pointer"
-                @click="completeTodo"
+                @click="completeTodo(todo)"
                 >done</i
               >
               <NuxtLink :to="'/todos/_' + todo.id"
@@ -116,7 +122,11 @@ import Todo from '../../models/todo/todo';
                   >edit</i
                 ></NuxtLink
               >
-              <i class="material-icons text-red-500 cursor-pointer">delete</i>
+              <i
+                class="material-icons text-red-500 cursor-pointer"
+                @click="deleteTodo(todo.id)"
+                >delete</i
+              >
             </div>
             <div class="flex justify-center items-center cursor-help">
               <i class="material-icons text-lg mr-2">info</i>
@@ -135,54 +145,72 @@ import Todo from '../../models/todo/todo';
 import Todo from "~~/models/todo/todo";
 import TodoService from "~~/services/todo/TodoService";
 import DateUtils from "../../utils/DateUtils";
-import Tag from "../../models/todo/tag";
 import { useTodoStore } from "../../stores/todo/TodoStore";
 import { useTagStore } from "../../stores/todo/TagStore";
+import TagService from "../../services/todo/TagService";
 
 const dateUtils: DateUtils = new DateUtils();
+const todoService: TodoService = new TodoService();
+const tagService: TagService = new TagService();
+
 const todoStore = useTodoStore();
 const tagStore = useTagStore();
 const tagSelection = ref("");
 const filterSelection = ref("active");
 const sortSelection = ref("due");
-
-/* Dummy objects */
 const title = ref("");
 const dueAt = ref(dateUtils.getDateForDatepicker());
-const testTodo: Todo = new Todo(
-  "Ein Todo",
-  dateUtils.getCurrentDateTime(),
-  dateUtils.getGermanDate(dueAt.value),
-  Todo.State.OPEN
-);
-const testTag: Tag = new Tag("Uni", "#1e40a0", 2);
-testTodo.id = 3;
-testTodo.tag = testTag;
-tagStore.add(testTag);
-todoStore.add(testTodo);
 
-const todoArray: Todo[] = todoStore.getAll();
-const todoList = ref(todoArray);
+/* Dummy objects */
+// const testTodo: Todo = new Todo(
+//   "Ein Todo",
+//   dateUtils.getCurrentDateTime(),
+//   dateUtils.getGermanDate(dueAt.value),
+//   Todo.State.OPEN
+// );
+// const testTag: Tag = new Tag("Uni", "#1e40a0", 2);
+// testTodo.id = 3;
+// testTodo.tag = testTag;
 
-const tagArray: Tag[] = tagStore.getAll();
-const tagList = ref(tagArray);
+const allTodos = await todoService.getAllTodos();
+const allTags = await tagService.getAllTags();
+
+todoStore.addAll(allTodos);
+tagStore.addAll(allTags);
+
+const todoList = ref(todoStore.getAll());
+const tagList = ref(tagStore.getAll());
 
 /* Function block */
 
-function addTodo() {
+async function addTodo() {
   let todo: Todo = new Todo(
     title.value,
     dateUtils.getCurrentDateTime(),
     dateUtils.getGermanDate(dueAt.value),
     Todo.State.OPEN
   );
+  todo = await todoService.addTodo(todo);
   todoStore.add(todo);
-  let todoService: TodoService = new TodoService();
-  todoService.addTodo(todo);
+  title.value = "";
 }
 
-function completeTodo() {
-  console.log("DONE");
+async function completeTodo(todo: Todo) {
+  if (todo !== undefined) {
+    todo.state = Todo.State.DONE;
+    await todoService.updateTodo(todo);
+    todoStore.update(todo);
+  }
+}
+
+async function deleteTodo(id: number | undefined) {
+  if (id !== undefined) {
+    let todo = todoStore.getById(id);
+    if (todo !== undefined) {
+      await todoService.deleteTodo(Number(todo.id));
+      todoStore.remove(todo);
+    }
+  }
 }
 </script>
 
