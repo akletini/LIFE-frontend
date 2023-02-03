@@ -44,7 +44,12 @@
           <label for="tag">Tag</label>
           <select type="text" id="tag" class="filter-dropdown" v-model="tag">
             <option value="empty">&nbsp;</option>
-            <option :value="tag.name" v-for="tag in tagList" :key="tag.id">
+            <option
+              :value="tag.name"
+              v-for="tag in tagList"
+              :key="tag.id"
+              :style="{ 'background-color': tag.color }"
+            >
               {{ tag.name }}
             </option>
           </select>
@@ -99,7 +104,7 @@ async function formSubmit() {
   const selectedTag = tagStore.getByName(String(tag.value));
   let todo: Todo = new Todo(
     String(title.value),
-    dateUtils.getCurrentDate(),
+    currentTodo?.createdAt,
     dateUtils.getGermanDate(String(dueAt.value)),
     Todo.State.OPEN,
     String(description.value),

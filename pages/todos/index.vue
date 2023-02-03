@@ -1,4 +1,3 @@
-import Todo from '../../models/todo/todo';
 <template>
   <div>
     <div class="flex-row">
@@ -8,17 +7,20 @@ import Todo from '../../models/todo/todo';
           <div class="grid grid-cols-5 gap-3 h-10">
             <input
               type="text"
-              class="text-black text-lg col-span-3 rounded-lg"
+              class="text-black text-lg col-span-3 rounded-lg drop-shadow-2xl"
               placeholder="&ensp; Add new..."
               v-model="title"
               required
             />
             <input
               type="date"
-              class="datepicker text-black rounded-lg"
+              class="datepicker text-black rounded-lg drop-shadow-2xl"
               v-model="dueAt"
             />
-            <button type="submit" class="bg-gray-50 text-black rounded-lg">
+            <button
+              type="submit"
+              class="border bg-gray-50 text-black rounded-lg drop-shadow-2xl hover:bg-green-700 hover:text-white hover:border-white"
+            >
               Add
             </button>
           </div>
@@ -36,7 +38,7 @@ import Todo from '../../models/todo/todo';
         </div>
         <NuxtLink
           to="/todos/tags/newTag"
-          class="border row-span-2 py-3 lg:row-start-1 lg:row-end-1 flex justify-center"
+          class="border rounded-md row-span-2 py-3 lg:row-start-1 lg:row-end-1 flex justify-center hover:bg-green-700"
         >
           <button>New Tag</button>
         </NuxtLink>
@@ -44,12 +46,16 @@ import Todo from '../../models/todo/todo';
           class="flex gap-4 row-span-2 lg:row-start-1 lg:row-end-1 py-3 justify-left lg:justify-center"
         >
           <p>Tags:</p>
-          <select class="filter-dropdown" v-model="tagSelection">
+          <select
+            class="filter-dropdown"
+            v-model="tagSelection"
+            @change="filterByTag()"
+          >
             <option value="empty">&emsp;</option>
             <option
               class="text-white"
               :style="{ 'background-color': tag.color }"
-              :value="tag.name"
+              :value="tag.id"
               v-for="tag in tagList"
               :key="tag.id"
             >
@@ -61,7 +67,11 @@ import Todo from '../../models/todo/todo';
           class="flex gap-4 row-span-2 py-3 justify-left lg:row-start-1 lg:row-end-1 lg:justify-center"
         >
           <p>Filter:</p>
-          <select class="filter-dropdown" v-model="filterSelection">
+          <select
+            class="filter-dropdown"
+            v-model="filterSelection"
+            @change="filterByTag()"
+          >
             <option value="active">Active</option>
             <option value="completed">Completed</option>
             <option value="due">Is due</option>
@@ -71,7 +81,11 @@ import Todo from '../../models/todo/todo';
           class="flex gap-4 row-span-2 py-3 justify-center lg:row-start-1 lg:row-end-1 lg:justify-center"
         >
           <p>Sort:</p>
-          <select class="filter-dropdown" v-model="sortSelection">
+          <select
+            class="filter-dropdown"
+            v-model="sortSelection"
+            @change="sortTodos(sortSelection)"
+          >
             <option value="added">Added date</option>
             <option value="due">Is due</option>
           </select>
@@ -113,17 +127,18 @@ import Todo from '../../models/todo/todo';
           >
             <div class="flex justify-center gap-4 px-2">
               <i
-                class="material-icons text-green-500 cursor-pointer"
+                class="material-icons text-green-500 cursor-pointer hover:shadow-md"
                 @click="completeTodo(todo)"
                 >done</i
               >
               <NuxtLink :to="'/todos/_' + todo.id"
-                ><i class="material-icons text-blue-500 cursor-pointer"
+                ><i
+                  class="material-icons text-blue-500 cursor-pointer hover:shadow-md"
                   >edit</i
                 ></NuxtLink
               >
               <i
-                class="material-icons text-red-500 cursor-pointer"
+                class="material-icons text-red-500 cursor-pointer hover:shadow-md"
                 @click="deleteTodo(todo.id)"
                 >delete</i
               >
@@ -155,22 +170,11 @@ const tagService: TagService = new TagService();
 
 const todoStore = useTodoStore();
 const tagStore = useTagStore();
-const tagSelection = ref("");
+const tagSelection = ref("empty");
 const filterSelection = ref("active");
 const sortSelection = ref("due");
 const title = ref("");
 const dueAt = ref(dateUtils.getDateForDatepicker());
-
-/* Dummy objects */
-// const testTodo: Todo = new Todo(
-//   "Ein Todo",
-//   dateUtils.getCurrentDateTime(),
-//   dateUtils.getGermanDate(dueAt.value),
-//   Todo.State.OPEN
-// );
-// const testTag: Tag = new Tag("Uni", "#1e40a0", 2);
-// testTodo.id = 3;
-// testTodo.tag = testTag;
 
 const allTodos = await todoService.getAllTodos();
 const allTags = await tagService.getAllTags();
@@ -180,6 +184,8 @@ tagStore.addAll(allTags);
 
 const todoList = ref(todoStore.getAll());
 const tagList = ref(tagStore.getAll());
+let tempList = ref(todoList.value);
+sortTodos(sortSelection.value);
 
 /* Function block */
 
@@ -193,6 +199,7 @@ async function addTodo() {
   todo = await todoService.addTodo(todo);
   todoStore.add(todo);
   title.value = "";
+  useRouter().push("/todos");
 }
 
 async function completeTodo(todo: Todo) {
@@ -210,6 +217,62 @@ async function deleteTodo(id: number | undefined) {
       await todoService.deleteTodo(Number(todo.id));
       todoStore.remove(todo);
     }
+  }
+}
+
+/* Sort/filter functions */
+function filterByTag() {
+  debugger;
+  const tag = tagSelection.value;
+  if (tagSelection.value === "empty") {
+    tempList.value = todoStore.getAll();
+  } else {
+    tempList.value = todoStore
+      .getAll()
+      .filter((todo) => todo.tag?.id === Number(tag));
+  }
+  applyFilter(filterSelection.value);
+  todoList.value = tempList.value;
+  sortTodos(sortSelection.value);
+}
+
+function applyFilter(filter: string) {
+  if (filter === "active") {
+    tempList.value = tempList.value.filter(
+      (todo) => Todo.State.OPEN === todo.state
+    );
+  } else if (filter === "completed") {
+    tempList.value = tempList.value.filter(
+      (todo) => Todo.State.DONE === todo.state
+    );
+  } else if (filter === "due") {
+    tempList.value = tempList.value.filter((todo) => {
+      if (todo.dueAt !== undefined) {
+        const datepicker = new Date(
+          dateUtils.getDateForDatepicker(todo.dueAt)
+        ).getTime();
+        const current = new Date(Date.now()).getTime();
+        return current >= datepicker;
+      }
+    });
+  }
+}
+
+function sortTodos(sort: string) {
+  if (sort === "due") {
+    todoList.value = tempList.value.sort((a, b) =>
+      new Date(dateUtils.getDateForDatepicker(a.dueAt)).getTime() >=
+      new Date(dateUtils.getDateForDatepicker(b.dueAt)).getTime()
+        ? 1
+        : -1
+    );
+  } else if (sort === "added") {
+    todoList.value = tempList.value.sort((a, b) =>
+      new Date(dateUtils.getDateTimeForJS(a.createdAt)).getTime() >=
+      new Date(dateUtils.getDateTimeForJS(b.createdAt)).getTime()
+        ? 1
+        : -1
+    );
   }
 }
 </script>

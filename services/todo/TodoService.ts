@@ -38,7 +38,7 @@ export class TodoService {
   public async getAllTodos() {
     let url = TodoService.BASE_URL + "/getAll";
     let todoArray: Todo[] = [];
-    const response = await fetch(url, {
+    await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

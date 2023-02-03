@@ -29,6 +29,12 @@ export class DateUtils {
     return dayjs(date, DateUtils.dateFormat).format("YYYY-MM-DD");
   }
 
+  public getDateTimeForJS(date?: string) {
+    return dayjs(date, DateUtils.dateTimeFormat).format(
+      "YYYY-MM-DDTHH:mm:ss.sssZ"
+    );
+  }
+
   public getGermanDate(date: string) {
     return dayjs(date).format(DateUtils.dateFormat);
   }

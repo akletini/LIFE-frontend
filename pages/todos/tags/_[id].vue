@@ -8,7 +8,7 @@
       <div></div>
     </div>
 
-    <form @submit.prevent="formSubmit">
+    <form action="#" @submit.prevent="">
       <div class="flex flex-col">
         <div class="flex flex-col mb-8">
           <label for="name">Name</label>
@@ -29,9 +29,22 @@
           />
         </div>
 
-        <div class="flex flex-col">
-          <button type="submit" class="border py-3 px-5 rounded-lg">
+        <div class="flex flex-col mb-8">
+          <button
+            type="submit"
+            @click="updateTag"
+            class="border py-3 px-5 rounded-lg"
+          >
             Save
+          </button>
+        </div>
+        <div class="flex flex-col">
+          <button
+            type="submit"
+            @click="deleteTag"
+            class="border py-3 px-5 rounded-lg border-red-600 hover:bg-red-800"
+          >
+            Delete
           </button>
         </div>
       </div>
@@ -54,11 +67,20 @@ const currentTag = tagStore.getById(Number(id));
 const name = ref(currentTag?.name);
 const color = ref(currentTag?.color);
 
-async function formSubmit() {
+async function updateTag() {
   let tag: Tag = new Tag(name.value, color.value, Number(id));
   tag = await tagService.updateTag(tag);
   tagStore.update(tag);
   todoStore.updateTagReferences(tag);
+  router.push("/todos");
+}
+
+async function deleteTag() {
+  await tagService.deleteTag(Number(id));
+  const tag = tagStore.getById(Number(id));
+  if (tag !== undefined) {
+    tagStore.remove(tag);
+  }
   router.push("/todos");
 }
 </script>

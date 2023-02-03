@@ -31,7 +31,9 @@
           <nav class="p-3 flex justify-between px-6">
             <div>
               <div v-if="!isSidebarOpen">
-                <NuxtLink to="/" class="font-bold text-green-600 text-xl"
+                <NuxtLink
+                  to="/"
+                  class="font-bold text-green-600 text-xl shadow-xl"
                   >LIFE App</NuxtLink
                 >
               </div>
@@ -113,8 +115,8 @@ function onMouseMove(e) {
 
 .resizer {
   height: calc(100%);
-  width: 6px;
-  background: #fff;
+  width: 3px;
+  background: #eee;
   transform: translateX(-3px);
   position: absolute;
   cursor: ew-resize;
@@ -133,7 +135,7 @@ function onMouseMove(e) {
 }
 
 .resizer:hover::before {
-  background-color: rgb(31, 31, 107);
-  box-shadow: 0 1px 4px 1px rgb(31, 31, 107);
+  background-color: rgb(61, 68, 74);
+  box-shadow: 0 1px 4px 1px rgb(61, 68, 74);
 }
 </style>
