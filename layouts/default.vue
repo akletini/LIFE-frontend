@@ -55,7 +55,9 @@
                 </svg>
               </button>
             </div>
-            <a href="/">User profile</a>
+            <div>
+              <button @click="signOut()">Logout</button>
+            </div>
           </nav>
         </header>
         <div class="px-6 py-4">
@@ -68,6 +70,7 @@
 
 <script setup>
 const deviceType = useDevice();
+const { status, data, signIn, signOut } = useSession();
 
 let isSidebarOpen = ref(true);
 let resizeValue = ref(deviceType.isMobileOrTablet ? 25 : 15);
