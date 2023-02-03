@@ -208,6 +208,7 @@ async function completeTodo(todo: Todo) {
     todo.state = Todo.State.DONE;
     await todoService.updateTodo(todo);
     todoStore.update(todo);
+    filterByTag();
   }
 }
 
