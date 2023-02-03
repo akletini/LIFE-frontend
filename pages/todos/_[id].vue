@@ -45,6 +45,7 @@
           <select type="text" id="tag" class="filter-dropdown" v-model="tag">
             <option value="empty">&nbsp;</option>
             <option
+              class="text-white"
               :value="tag.name"
               v-for="tag in tagList"
               :key="tag.id"
