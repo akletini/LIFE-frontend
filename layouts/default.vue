@@ -27,6 +27,7 @@
           width: 100 - resizeValue + '%',
         }"
       >
+        <!-- Nav bar-->
         <header class="shadow-sm bg-gray-700 min-w-full">
           <nav class="p-3 flex justify-between px-6">
             <div>
@@ -56,7 +57,7 @@
               </button>
             </div>
             <div>
-              <button @click="signOut()">Logout</button>
+              <button @click="() => signOut()">Logout</button>
             </div>
           </nav>
         </header>
@@ -70,7 +71,7 @@
 
 <script setup>
 const deviceType = useDevice();
-const { status, data, signIn, signOut } = useSession();
+const { signOut } = useSession();
 
 let isSidebarOpen = ref(true);
 let resizeValue = ref(deviceType.isMobileOrTablet ? 25 : 15);

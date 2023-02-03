@@ -164,10 +164,16 @@ import DateUtils from "../../utils/DateUtils";
 import { useTodoStore } from "../../stores/todo/TodoStore";
 import { useTagStore } from "../../stores/todo/TagStore";
 import TagService from "../../services/todo/TagService";
+import JwtData from "~~/models/JwtData";
+import { JWT } from "next-auth/jwt";
 
 const dateUtils: DateUtils = new DateUtils();
 const todoService: TodoService = new TodoService();
 const tagService: TagService = new TagService();
+const headers = useRequestHeaders(["cookie"]) as HeadersInit;
+const { data } = await useFetch("/api/auth/token", { headers });
+const token = data.value;
+const jwt = parseJwt(token!);
 
 const todoStore = useTodoStore();
 const tagStore = useTagStore();
@@ -295,6 +301,20 @@ function sortTodos(sort: string) {
         : -1
     );
   }
+}
+
+function parseJwt(token: Pick<JWT, string>): JwtData {
+  let jwt: JwtData = new JwtData();
+  jwt.accessToken = String(token.accessToken);
+  jwt.email = String(token.email);
+  jwt.exp = Number(token.exp);
+  jwt.iat = Number(token.iat);
+  jwt.id = String(token.id);
+  jwt.jti = String(token.jti);
+  jwt.name = String(token.name);
+  jwt.picture = String(token.picture);
+  jwt.sub = String(token.sub);
+  return jwt;
 }
 </script>
 
