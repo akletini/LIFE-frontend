@@ -3,6 +3,7 @@ import { Todo } from "~~/models/todo/todo";
 export class TodoService {
   static BASE_URL: string;
   static API_URL: string;
+  static ACCESS_TOKEN: string;
 
   constructor() {
     const config = useRuntimeConfig();
@@ -62,6 +63,7 @@ export class TodoService {
 
   public async addTodo(todo: Todo) {
     let url = TodoService.BASE_URL + "/add";
+    todo.taskAccessToken = TodoService.ACCESS_TOKEN;
     const response = await fetch(url, {
       method: "POST",
       body: JSON.stringify(todo),
@@ -87,6 +89,7 @@ export class TodoService {
 
   public async updateTodo(todo: Todo) {
     let url = TodoService.BASE_URL + "/update";
+    todo.taskAccessToken = TodoService.ACCESS_TOKEN;
     const response = await fetch(url, {
       method: "PUT",
       body: JSON.stringify(todo),
@@ -110,10 +113,12 @@ export class TodoService {
     return todo;
   }
 
-  public async deleteTodo(todoId: number) {
-    let url = TodoService.BASE_URL + "/delete/" + todoId;
+  public async deleteTodo(todo: Todo) {
+    let url = TodoService.BASE_URL + "/delete";
+    todo.taskAccessToken = TodoService.ACCESS_TOKEN;
     const response = await fetch(url, {
       method: "DELETE",
+      body: JSON.stringify(todo),
       headers: {
         "Content-Type": "application/json",
       },

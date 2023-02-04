@@ -9,6 +9,7 @@ export class Todo {
   public dueAt?: string;
   public fileAttachment?: File;
   public state?: Todo.State;
+  public taskAccessToken?: string;
 
   constructor();
   constructor(
