@@ -1,3 +1,4 @@
+import User from "../user";
 import Tag from "./tag";
 
 export class Todo {
@@ -7,9 +8,9 @@ export class Todo {
   public tag?: Tag;
   public createdAt?: string;
   public dueAt?: string;
-  public fileAttachment?: File;
+  public attachedFile?: File;
   public state?: Todo.State;
-  public taskAccessToken?: string;
+  public assignedUser?: User;
 
   constructor();
   constructor(

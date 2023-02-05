@@ -163,18 +163,24 @@ import TodoService from "~~/services/todo/TodoService";
 import DateUtils from "../../utils/DateUtils";
 import { useTodoStore } from "../../stores/todo/TodoStore";
 import { useTagStore } from "../../stores/todo/TagStore";
+import { useUserStore } from "../../stores/UserStore";
 import TagService from "../../services/todo/TagService";
 import JwtUtils from "~~/utils/JwtUtils";
+import UserService from "../../services/UserService";
 
 const dateUtils: DateUtils = new DateUtils();
 const todoService: TodoService = new TodoService();
 const tagService: TagService = new TagService();
+const userService: UserService = new UserService();
+const userStore = useUserStore();
 
 const headers = useRequestHeaders(["cookie"]) as HeadersInit;
 const { data } = await useFetch("/api/auth/token", { headers });
 const token = data.value;
 let jwt = JwtUtils.parseJwt(token!);
-TodoService.ACCESS_TOKEN = jwt.accessToken;
+const userByMail = await userService.getUserByEmail(jwt.email);
+userStore.add(userByMail);
+TodoService.ASSIGNED_USER = userByMail;
 
 const todoStore = useTodoStore();
 const tagStore = useTagStore();

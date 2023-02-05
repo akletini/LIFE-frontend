@@ -14,7 +14,7 @@ export class DateUtils {
     return dayjs(new Date(Date.now())).format(DateUtils.dateFormat);
   }
 
-  public getCurrentDateTime(date?: string) {
+  public getCurrentDateTime(date?: Date) {
     if (date == undefined) {
       return dayjs(new Date(Date.now())).format(DateUtils.dateTimeFormat);
     }
@@ -39,7 +39,7 @@ export class DateUtils {
     return dayjs(date).format(DateUtils.dateFormat);
   }
 
-  private getGermanDateTime(date: string) {
+  private getGermanDateTime(date: Date) {
     return dayjs(date).format(DateUtils.dateTimeFormat);
   }
 

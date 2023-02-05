@@ -6,7 +6,7 @@ class JwtData {
   id!: string;
   jti!: string;
   name!: string;
-  picture!: string;
+  image!: string;
   sub!: string;
 }
 

@@ -36,7 +36,7 @@
             type="text"
             id="description"
             class="form-textarea text-black text-xl"
-            :v-model="description"
+            v-model="description"
           ></textarea>
         </div>
 
@@ -94,7 +94,7 @@ const parsedId = Array.isArray(id) ? Number(id[0]) : Number(id);
 const currentTodo = todoStore.getById(parsedId);
 const title = ref(currentTodo?.title);
 const dueAt = ref(dateUtils.getDateForDatepicker(currentTodo?.dueAt));
-const description = ref(currentTodo?.description || "");
+const description = ref(currentTodo?.description);
 const tag = ref(currentTodo?.tag?.name);
 const tagArray: Tag[] = tagStore.getAll();
 const tagList = ref(tagArray);
@@ -102,20 +102,19 @@ const tagList = ref(tagArray);
 
 async function formSubmit() {
   debugger;
+  const descr = description.value;
   const selectedTag = tagStore.getByName(String(tag.value));
   let todo: Todo = new Todo(
     String(title.value),
     currentTodo?.createdAt,
     dateUtils.getGermanDate(String(dueAt.value)),
     Todo.State.OPEN,
-    String(description.value),
+    String(description.value || ""),
     selectedTag,
     parsedId
   );
   todo = await todoService.updateTodo(todo);
   todoStore.update(todo);
-
-  console.log(JSON.stringify(todo));
   router.push("/todos");
 }
 </script>
