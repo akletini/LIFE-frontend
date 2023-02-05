@@ -1,9 +1,10 @@
 import { Todo } from "~~/models/todo/todo";
+import User from "~~/models/user";
 
 export class TodoService {
   static BASE_URL: string;
   static API_URL: string;
-  static ACCESS_TOKEN: string;
+  static ASSIGNED_USER: User;
 
   constructor() {
     const config = useRuntimeConfig();
@@ -62,8 +63,9 @@ export class TodoService {
   }
 
   public async addTodo(todo: Todo) {
+    debugger;
     let url = TodoService.BASE_URL + "/add";
-    todo.taskAccessToken = TodoService.ACCESS_TOKEN;
+    todo.assignedUser = TodoService.ASSIGNED_USER;
     const response = await fetch(url, {
       method: "POST",
       body: JSON.stringify(todo),
@@ -89,7 +91,7 @@ export class TodoService {
 
   public async updateTodo(todo: Todo) {
     let url = TodoService.BASE_URL + "/update";
-    todo.taskAccessToken = TodoService.ACCESS_TOKEN;
+    todo.assignedUser = TodoService.ASSIGNED_USER;
     const response = await fetch(url, {
       method: "PUT",
       body: JSON.stringify(todo),
@@ -115,7 +117,7 @@ export class TodoService {
 
   public async deleteTodo(todo: Todo) {
     let url = TodoService.BASE_URL + "/delete";
-    todo.taskAccessToken = TodoService.ACCESS_TOKEN;
+    todo.assignedUser = TodoService.ASSIGNED_USER;
     const response = await fetch(url, {
       method: "DELETE",
       body: JSON.stringify(todo),

@@ -14,7 +14,7 @@ const GOOGLE_AUTHORIZATION_URL =
  * `accessToken` and `accessTokenExpires`. If an error occurs,
  * returns the old token and an error property
  */
-async function refreshAccessToken(token: any) {
+async function refreshAccessToken(token: any, provider: any) {
   try {
     const url =
       "https://oauth2.googleapis.com/token?" +
@@ -39,6 +39,7 @@ async function refreshAccessToken(token: any) {
 
     return {
       ...token,
+      provider: provider,
       accessToken: refreshedTokens.access_token,
       accessTokenExpires: Date.now() + refreshedTokens.expires_at * 1000,
       refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
@@ -60,10 +61,13 @@ export default NuxtAuthHandler({
   callbacks: {
     async jwt({ token, user, account }) {
       // Initial sign in
+      let provider = "";
       if (account && user) {
+        provider = account.provider;
         const expiresAt = account.expires_at || 1;
         return {
           accessToken: account.access_token,
+          provider: account.provider,
           accessTokenExpires: Date.now() + expiresAt * 1000,
           refreshToken: account.refresh_token,
           user,
@@ -77,7 +81,7 @@ export default NuxtAuthHandler({
       }
 
       // Access token has expired, try to update it
-      return refreshAccessToken(token);
+      return refreshAccessToken(token, provider);
     },
   },
   providers: [

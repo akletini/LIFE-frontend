@@ -139,15 +139,17 @@ definePageMeta({
   layout: "empty",
   auth: false,
 });
+
 const routeName = useRoute().fullPath.toString();
 if (routeName! !== "/login?email=&password=") {
   useRouter().push("/login?email=&password=");
 }
-const { status, data, signIn } = useSession();
-
-// status.value;
-// data.value; // Session data, e.g., expiration, user.email, ...
-// const statusValue = status.value; // Session status: `unauthenticated`, `loading`, `authenticated`
+const { status, signIn } = useSession();
+onMounted(() => {
+  if (status.value === "authenticated") {
+    signIn("google", { callbackUrl: "http://localhost:3000/" });
+  }
+});
 </script>
 
 <style scoped></style>
