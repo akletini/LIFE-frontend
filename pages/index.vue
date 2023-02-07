@@ -39,31 +39,39 @@ const userService: UserService = new UserService();
 const dateUtils: DateUtils = new DateUtils();
 const headers = useRequestHeaders(["cookie"]) as HeadersInit;
 const { data } = await useFetch("/api/auth/token", { headers });
-const token = data.value!;
-const sessionUser: any = token.user;
-const userByEmail = await userService.getUserByEmail(sessionUser?.email || "");
+const token = data.value;
+let userByEmail;
+debugger;
+if (!token) {
+  // user is already logged in
+  const currentUserId = localStorage.getItem("currentUserId");
+  const currentUser = await userService.getUserById(Number(currentUserId));
+  useUserStore().update(currentUser);
+} else {
+  const sessionUser: any = token.user;
+  userByEmail = await userService.getUserByEmail(sessionUser.email);
+  if (userByEmail === undefined) {
+    // New user
+    const tokenContainer: TokenContainer = new TokenContainer(
+      String(token.accessToken),
+      dateUtils.getCurrentDateTime(new Date(Date.now())),
+      String(token.refreshToken) || null
+    );
 
-if (userByEmail === undefined) {
-  // New user
-  const tokenContainer: TokenContainer = new TokenContainer(
-    String(token.accessToken),
-    dateUtils.getCurrentDateTime(new Date(Date.now())),
-    String(token.refreshToken) || null
-  );
+    const user: User = new User();
+    user.email = sessionUser?.email || "";
+    user.name = sessionUser?.name || "";
+    user.tokenContainer = tokenContainer;
+    // Change logic here
+    user.password = "";
+    user.authProvider =
+      sessionUser?.image && sessionUser.image.includes("google")
+        ? User.AuthProvider.GOOGLE
+        : User.AuthProvider.CREDENTIALS;
 
-  const user: User = new User();
-  user.email = sessionUser?.email || "";
-  user.name = sessionUser?.name || "";
-  user.tokenContainer = tokenContainer;
-  // Change logic here
-  user.password = "";
-  user.authProvider =
-    sessionUser?.image && sessionUser.image.includes("google")
-      ? User.AuthProvider.GOOGLE
-      : User.AuthProvider.CREDENTIALS;
-
-  const addedUser = await userService.addUser(user);
-  useUserStore().add(addedUser);
+    const addedUser = await userService.addUser(user);
+    localStorage.setItem("currentUserId", String(addedUser.id));
+  }
 }
 </script>
 

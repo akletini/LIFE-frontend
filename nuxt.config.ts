@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
   },
+  ssr: false,
   build: {
     transpile: ["@headlessui/vue", "@headlessui/tailwindcss"],
   },
