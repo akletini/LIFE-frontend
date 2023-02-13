@@ -3,11 +3,12 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBaseUrl: process.env.API_BASE_URL,
-      dateFormat: process.env.DE_DATE_FORMAT,
-      dateTimeFormat: process.env.DE_DATETIME_FORMAT,
+      dateFormat: "DD.MM.YYYY",
+      dateTimeFormat: "DD.MM.YYYY HH:mm:ss",
     },
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
+    nextSecret: process.env.NEXTAUTH_SECRET,
   },
   ssr: false,
   build: {

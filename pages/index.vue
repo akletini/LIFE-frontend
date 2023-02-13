@@ -71,6 +71,9 @@ if (!token) {
 
     const addedUser = await userService.addUser(user);
     localStorage.setItem("currentUserId", String(addedUser.id));
+  } else {
+    // if the user logs in but already exists and the local storage is empty
+    localStorage.setItem("currentUserId", String(userByEmail.id));
   }
 }
 </script>
