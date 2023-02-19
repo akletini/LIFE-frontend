@@ -1,5 +1,4 @@
-import TokenContainer from "./tokenContainer";
-
+import TokenContainer from "./tokenContainer"
 export class User {
   public id?: number | undefined;
   public name!: string;

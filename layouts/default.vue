@@ -119,7 +119,7 @@
 </template>
 
 <script setup lang="ts">
-import UserService from "~~/services/UserService";
+import UserService from "~~/services/user/UserService";
 
 const deviceType = useDevice();
 const { signOut } = useSession();

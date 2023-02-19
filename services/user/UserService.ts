@@ -1,4 +1,4 @@
-import User from "~~/models/user";
+import User from "~~/models/user/user";
 
 export class UserService {
   static BASE_URL: string;

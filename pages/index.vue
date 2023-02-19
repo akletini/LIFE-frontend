@@ -30,9 +30,9 @@ import UserService from '../services/UserService';
 </template>
 
 <script setup lang="ts">
-import User from "~~/models/user";
-import TokenContainer from "~~/models/tokenContainer";
-import UserService from "~~/services/UserService";
+import User from "~~/models/user/user";
+import TokenContainer from "~~/models/user/tokenContainer";
+import UserService from "~~/services/user/UserService";
 import DateUtils from "../utils/DateUtils";
 
 const userService: UserService = new UserService();

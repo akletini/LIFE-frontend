@@ -1,5 +1,5 @@
 import { Todo } from "~~/models/todo/todo";
-import User from "~~/models/user";
+import User from "~~/models/user/user";
 
 export class TodoService {
   static BASE_URL: string;
@@ -63,7 +63,6 @@ export class TodoService {
   }
 
   public async addTodo(todo: Todo) {
-    debugger;
     let url = TodoService.BASE_URL + "/add";
     todo.assignedUser = TodoService.ASSIGNED_USER;
     const response = await fetch(url, {

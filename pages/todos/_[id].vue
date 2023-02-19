@@ -101,7 +101,6 @@ const tagList = ref(tagArray);
 // const file = ref("")
 
 async function formSubmit() {
-  debugger;
   const descr = description.value;
   const selectedTag = tagStore.getByName(String(tag.value));
   let todo: Todo = new Todo(
