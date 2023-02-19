@@ -1,14 +1,26 @@
 <template>
   <main>
+    <h1>Navigation:</h1>
+    <nav>
+      <MDNavLayout :navigation-tree="navigation" />
+    </nav>
     <ContentDoc />
   </main>
 </template>
 
-<script></script>
+<script setup>
+const { data: navigation } = await useAsyncData("navigation", () => {
+  return fetchContentNavigation();
+});
+</script>
 
 <style scoped>
 main {
   @apply pt-7 px-4;
+}
+
+main :deep(code) {
+  @apply font-extrabold italic;
 }
 
 main :deep(h1) {
@@ -22,7 +34,7 @@ main :deep(h2) {
 main :deep(ul) {
   @apply mb-4;
   list-style-type: circle;
-  padding: 30px;
+  padding: 2px;
 }
 
 ul.a {

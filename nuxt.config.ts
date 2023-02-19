@@ -32,6 +32,11 @@ export default defineNuxtConfig({
       },
     ],
   ],
+  content: {
+    highlight: {
+      theme: "dracula",
+    },
+  },
   imports: {
     dirs: ["stores"],
   },
