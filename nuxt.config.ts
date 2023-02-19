@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     "@nuxtjs/device",
     "@nathanchase/nuxt-dayjs-module",
     "@sidebase/nuxt-auth",
+    "@nuxt/content",
     [
       "@pinia/nuxt",
       {

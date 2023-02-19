@@ -8,6 +8,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@nuxt/content": "^2.4.3",
     "@nuxtjs/tailwindcss": "^6.2.0",
     "@sidebase/nuxt-auth": "^0.4.0-alpha.5",
     "@tailwindcss/forms": "^0.5.3",
