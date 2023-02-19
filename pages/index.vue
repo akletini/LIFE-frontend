@@ -41,7 +41,7 @@ const headers = useRequestHeaders(["cookie"]) as HeadersInit;
 const { data } = await useFetch("/api/auth/token", { headers });
 const token = data.value;
 let userByEmail;
-debugger;
+
 if (!token) {
   // user is already logged in
   const currentUserId = localStorage.getItem("currentUserId");
@@ -61,6 +61,7 @@ if (!token) {
     const user: User = new User();
     user.email = sessionUser?.email || "";
     user.name = sessionUser?.name || "";
+    user.imageUrl = sessionUser?.image || null;
     user.tokenContainer = tokenContainer;
     // Change logic here
     user.password = "";
