@@ -91,6 +91,7 @@
           </select>
         </div>
       </div>
+      <!-- <LoadingSpinner v-if="loading"></LoadingSpinner> -->
 
       <!-- Todo list -->
       <div class="py-4">
@@ -165,7 +166,7 @@ import { useTodoStore } from "../../stores/todo/TodoStore";
 import { useTagStore } from "../../stores/todo/TagStore";
 import { useUserStore } from "../../stores/UserStore";
 import TagService from "../../services/todo/TagService";
-import UserService from "../../services/UserService";
+import UserService from "../../services/user/UserService";
 
 const dateUtils: DateUtils = new DateUtils();
 const todoService: TodoService = new TodoService();
@@ -185,6 +186,8 @@ const filterSelection = ref("active");
 const sortSelection = ref("due");
 const title = ref("");
 const dueAt = ref(dateUtils.getDateForDatepicker());
+
+const loading = ref(true);
 
 const allTodos = await todoService.getAllTodos();
 const allTags = await tagService.getAllTags();
@@ -231,28 +234,8 @@ async function deleteTodo(id: number | undefined) {
   }
 }
 
-function determineHourglassColor(dueAt: string | undefined) {
-  if (dueAt == undefined) {
-    return;
-  }
-  const date = new Date(dateUtils.getDateForDatepicker(dueAt));
-  const current = new Date(Date.now());
-  const diffTime = date.valueOf() - current.valueOf();
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  let classVal = "";
-  if (diffDays <= 3 && diffDays > 0) {
-    classVal = "text-orange-400 border-orange-400";
-  } else if (diffDays <= 0) {
-    classVal = "text-red-500 border-red-500";
-  } else {
-    classVal = "text-green-700 border-green-700";
-  }
-  return classVal;
-}
-
 /* Sort/filter functions */
 function filterByTag() {
-  debugger;
   const tag = tagSelection.value;
   if (tagSelection.value === "empty") {
     tempList.value = todoStore.getAll();

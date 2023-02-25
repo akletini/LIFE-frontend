@@ -1,4 +1,3 @@
-import UserService from '../services/UserService';
 <template>
   <div>
     <h2>Index</h2>
@@ -41,7 +40,6 @@ const headers = useRequestHeaders(["cookie"]) as HeadersInit;
 const { data } = await useFetch("/api/auth/token", { headers });
 const token = data.value;
 let userByEmail;
-
 if (!token) {
   // user is already logged in
   const currentUserId = localStorage.getItem("currentUserId");

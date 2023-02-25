@@ -119,14 +119,16 @@
 </template>
 
 <script setup lang="ts">
+import User from "~~/models/user/user";
 import UserService from "~~/services/user/UserService";
-
 const deviceType = useDevice();
 const { signOut } = useSession();
 const userService: UserService = new UserService();
-const currentUser = await userService.getUserById(
-  Number(localStorage.getItem("currentUserId"))
-);
+const currentUserId = localStorage.getItem("currentUserId");
+let currentUser = new User();
+if (currentUserId !== "undefined") {
+  currentUser = await userService.getUserById(Number(currentUserId));
+}
 
 let isSidebarOpen = ref(true);
 let resizeValue = ref(deviceType.isMobileOrTablet ? 25 : 15);

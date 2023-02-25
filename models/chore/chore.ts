@@ -1,4 +1,5 @@
 import User from "../user/user";
+import Interval from "./interval";
 
 export class Chore {
   public id?: number | undefined;
@@ -6,7 +7,11 @@ export class Chore {
   public description?: string;
   public dueAt?: string;
   public createdAt?: string;
-  public interval?: number;
+  public startDate?: string;
+  public active?: boolean;
+  public shiftInterval?: boolean;
+  public duration?: number;
+  public interval?: Interval;
   public assignedUser?: User;
 }
 
