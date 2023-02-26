@@ -91,7 +91,6 @@
           </select>
         </div>
       </div>
-      <!-- <LoadingSpinner v-if="loading"></LoadingSpinner> -->
 
       <!-- Todo list -->
       <div class="py-4">
@@ -186,8 +185,6 @@ const filterSelection = ref("active");
 const sortSelection = ref("due");
 const title = ref("");
 const dueAt = ref(dateUtils.getDateForDatepicker());
-
-const loading = ref(true);
 
 const allTodos = await todoService.getAllTodos();
 const allTags = await tagService.getAllTags();

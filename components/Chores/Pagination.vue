@@ -4,11 +4,11 @@
     <span class="text-sm text-gray-700 dark:text-gray-400 py-2">
       Showing
       <span class="font-semibold text-gray-900 dark:text-white">{{
-        currentPage.size * currentPage.number + currentPage.numberOfElements
+        currentPageContentSize
       }}</span>
       out of
       <span class="font-semibold text-gray-900 dark:text-white">
-        {{ currentPage.totalElements }}</span
+        {{ choreStore.getCurrentPage().totalElements }}</span
       >
       entries
     </span>
@@ -31,7 +31,7 @@
             <i class="material-icons text-sm">arrow_back_ios</i>
           </button>
         </li>
-        <li v-for="page in currentPage.totalPages">
+        <li v-for="page in choreStore.getCurrentPage().totalPages">
           <button
             @click="
               () => {
@@ -67,14 +67,24 @@
 </template>
 
 <script setup lang="ts">
+import Chore from "~~/models/chore/chore";
+import Page from "~~/models/page";
 import { ChoreService } from "~~/services/chore/ChoreService";
 
 const choreService = new ChoreService();
 const choreStore = useChoreStore();
-let currentPage = ref(choreStore.getCurrentPage());
-let disablePrev = ref(true);
-let disableNext = ref(false);
+const props = defineProps<{
+  page: Page<Chore>;
+}>();
+let currentPage = ref(props.page);
+let disablePrev = ref(currentPage.value.totalPages == 1);
+let disableNext = ref(currentPage.value.totalPages == 1);
 let currentSelectedPage = ref(1);
+let currentPageContentSize = computed(
+  () =>
+    currentPage.value.size * currentPage.value.number +
+    currentPage.value.numberOfElements
+);
 
 async function getPage(page: number) {
   const totalPages = currentPage.value.totalPages;
@@ -94,9 +104,13 @@ async function getPage(page: number) {
 
   if (page < currentPage.value.totalPages && page >= 0) {
     currentPage.value = choreStore.getCurrentPage();
-    const newPage = await choreService.getChorePage(page);
+    const newPage = await choreService.getChorePage(
+      page,
+      choreStore.getCurrentFilters(),
+      choreStore.getCurrentSort()
+    );
     currentPage.value = newPage.data.page;
-    choreStore.setCurrentPage(newPage.data.page);
+    choreStore.setCurrentPage(currentPage.value);
     choreStore.setChores(newPage.data.page.content);
   }
 }

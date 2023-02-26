@@ -7,6 +7,8 @@ export const useChoreStore = defineStore("choreStore", {
     chores: <Chore[]>[],
     currentPage: <Page<Chore>[]>[],
     choreService: <ChoreService[]>[],
+    currentFilters: <string[]>[],
+    currentSort: "dueAt",
   }),
   actions: {
     async getService() {
@@ -24,7 +26,21 @@ export const useChoreStore = defineStore("choreStore", {
       return this.currentPage[0];
     },
     setCurrentPage(page: Page<Chore>) {
-      this.currentPage[0] = page;
+      this.currentPage.length = 0;
+      this.currentPage.push(page);
+    },
+    getCurrentSort(): string {
+      return this.currentSort;
+    },
+    setCurrentSort(sort: string) {
+      this.currentSort = sort;
+    },
+    getCurrentFilters(): string[] {
+      return this.currentFilters;
+    },
+    setCurrentFilters(filters: string[]) {
+      this.currentFilters.length = 0;
+      filters.forEach((filter) => this.currentFilters.push(filter));
     },
     getAllChores(): Chore[] {
       return this.chores;

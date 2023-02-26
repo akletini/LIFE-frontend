@@ -117,6 +117,9 @@
         </button>
       </div>
     </form>
+    <ErrorTransition class="mt-4">
+      <ErrorModal v-if="showErrorPanel" :error="error"></ErrorModal>
+    </ErrorTransition>
   </div>
 </template>
 
@@ -125,7 +128,8 @@ import Chore from "~~/models/chore/chore";
 import DateUtils from "../../utils/DateUtils";
 import Interval from "~~/models/chore/interval";
 import ChoreService from "../../services/chore/ChoreService";
-
+let error = ref();
+const showErrorPanel = ref(false);
 const choreStore = useChoreStore();
 const choreService = await choreStore.getService();
 const dateUtils = new DateUtils();
@@ -160,8 +164,18 @@ async function formSubmit() {
   );
   chore.assignedUser = ChoreService.ASSIGNED_USER;
 
-  const storedChore = await choreService.updateChore(chore);
-  choreStore.update(storedChore);
+  const responseObject = await choreService.updateChore(chore);
+  if ("id" in responseObject) {
+    choreStore.update(responseObject);
+    useRouter().push("/chores");
+  } else {
+    error.value = responseObject;
+    showErrorPanel.value = true;
+    setTimeout(() => {
+      showErrorPanel.value = false;
+      error.value = null;
+    }, 3000);
+  }
 }
 
 function getIntervalValue() {

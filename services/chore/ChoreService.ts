@@ -13,14 +13,20 @@ export class ChoreService {
     ChoreService.BASE_URL = ChoreService.API_URL + "/chores";
   }
 
-  public async getChorePage(page: number): Promise<ApiResponse<Chore>> {
-    let url =
-      ChoreService.BASE_URL +
-      "/get?" +
-      new URLSearchParams({
-        page: String(page),
-        size: String(5),
-      });
+  public async getChorePage(
+    page: number,
+    filterBy: string[],
+    sort?: string
+  ): Promise<ApiResponse<Chore>> {
+    const sortBy = sort || "dueAt";
+    const searchParams = new URLSearchParams({
+      page: String(page),
+      size: String(5),
+      sortBy: sortBy,
+    });
+    filterBy.forEach((filter) => searchParams.append("filterBy", filter));
+    let url = ChoreService.BASE_URL + "/get?" + searchParams;
+
     let apiResponse: ApiResponse<Chore>;
     const response = await fetch(url, {
       method: "GET",
@@ -77,9 +83,11 @@ export class ChoreService {
     return response;
   }
 
-  public async updateChore(chore: Chore) {
+  public async updateChore(chore: Chore): Promise<Chore | Error> {
     let url = ChoreService.BASE_URL + "/update";
     chore.assignedUser = ChoreService.ASSIGNED_USER;
+    let responseOk = false;
+    let error: Error;
     let response = await fetch(url, {
       method: "PUT",
       body: JSON.stringify(chore),
@@ -87,8 +95,22 @@ export class ChoreService {
         "Content-Type": "application/json",
       },
     })
-      .then((response) => response.json())
-      .then((result) => (chore = result));
+      .then((response) => {
+        if (response.ok) {
+          responseOk = true;
+        }
+        return response.json();
+      })
+      .then((result) => {
+        if (responseOk) {
+          return (chore = result);
+        } else {
+          return (error = result);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     return response;
   }
 

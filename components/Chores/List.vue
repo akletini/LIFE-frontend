@@ -64,7 +64,6 @@ const choreRef = ref(choreStore.getAllChores());
 async function completeChore(chore: Chore) {
   if (chore !== undefined) {
     chore = await choreService.completeChore(chore);
-    debugger;
     choreStore.update(chore);
   }
 }
