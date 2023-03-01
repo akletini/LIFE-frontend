@@ -105,6 +105,8 @@ const showSortDropdown = ref(false);
 const filterByActive = ref(true);
 const filterByDue = ref(false);
 const filters = ref<Set<string>>(new Set());
+filters.value.add("active");
+choreStore.setCurrentFilters(Array.from(filters.value));
 const sort = ref("dueAt");
 
 function toggleSortDropdown() {
@@ -113,8 +115,8 @@ function toggleSortDropdown() {
 
 async function sortBy(by: string) {
   sort.value = by;
-  const currentPage = await choreService.getChorePage(
-    0,
+  const currentPage = await choreService.getPage(
+    choreStore.getCurrentPage().number,
     Array.from(filters.value),
     sort.value
   );
@@ -125,17 +127,12 @@ async function sortBy(by: string) {
 
 async function toggleFilterDropdown() {
   if (showFilterDropdown.value) {
-    if (filterByDue.value) {
-      filters.value.add("due");
-    } else {
-      filters.value.delete("due");
-    }
-    if (filterByActive.value) {
-      filters.value.add("active");
-    } else {
-      filters.value.delete("active");
-    }
-    const currentPage = await choreService.getChorePage(
+    filterByDue.value ? filters.value.add("due") : filters.value.delete("due");
+    filterByActive.value
+      ? filters.value.add("active")
+      : filters.value.delete("active");
+
+    const currentPage = await choreService.getPage(
       choreStore.getCurrentPage().number,
       Array.from(filters.value)
     );
