@@ -8,7 +8,7 @@
       }}</span>
       out of
       <span class="font-semibold text-gray-900 dark:text-white">
-        {{ choreStore.getCurrentPage().totalElements }}</span
+        {{ todoStore.getCurrentPage().totalElements }}</span
       >
       entries
     </span>
@@ -31,7 +31,7 @@
             <i class="material-icons text-sm">arrow_back_ios</i>
           </button>
         </li>
-        <li v-for="page in choreStore.getCurrentPage().totalPages">
+        <li v-for="page in todoStore.getCurrentPage().totalPages">
           <button
             @click="
               () => {
@@ -67,14 +67,15 @@
 </template>
 
 <script setup lang="ts">
-import Chore from "~~/models/chore/chore";
 import Page from "~~/models/page";
-import { ChoreService } from "~~/services/chore/ChoreService";
+import TodoService from "../../services/todo/TodoService";
+import { useTodoStore } from "../../stores/todo/TodoStore";
+import Todo from "~~/models/todo/todo";
 
-const choreService = new ChoreService();
-const choreStore = useChoreStore();
+const todoService = new TodoService();
+const todoStore = useTodoStore();
 const props = defineProps<{
-  page: Page<Chore>;
+  page: Page<Todo>;
 }>();
 let currentPage = ref(props.page);
 let disablePrev = ref(currentPage.value.totalPages == 1);
@@ -87,6 +88,7 @@ let currentPageContentSize = computed(
 );
 
 async function getPage(page: number) {
+  debugger;
   const totalPages = currentPage.value.totalPages;
   if (page > 0 && page < totalPages - 1) {
     disablePrev.value = false;
@@ -103,15 +105,16 @@ async function getPage(page: number) {
   }
 
   if (page < currentPage.value.totalPages && page >= 0) {
-    currentPage.value = choreStore.getCurrentPage();
-    const newPage = await choreService.getPage(
+    currentPage.value = todoStore.getCurrentPage();
+    const newPage = await todoService.getPage(
       page,
-      choreStore.getCurrentFilters(),
-      choreStore.getCurrentSort()
+      todoStore.getCurrentFilters(),
+      todoStore.getCurrentFilterTags(),
+      todoStore.getCurrentSort()
     );
     currentPage.value = newPage.data.page;
-    choreStore.setCurrentPage(currentPage.value);
-    choreStore.setChores(newPage.data.page.content);
+    todoStore.setCurrentPage(currentPage.value);
+    todoStore.setTodos(newPage.data.page.content);
   }
 }
 </script>

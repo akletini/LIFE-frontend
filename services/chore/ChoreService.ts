@@ -13,7 +13,7 @@ export class ChoreService {
     ChoreService.BASE_URL = ChoreService.API_URL + "/chores";
   }
 
-  public async getChorePage(
+  public async getPage(
     page: number,
     filterBy: string[],
     sort?: string

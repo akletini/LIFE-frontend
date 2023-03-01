@@ -1,3 +1,4 @@
+import { ApiResponse } from "~~/models/apiResponse";
 import { Todo } from "~~/models/todo/todo";
 import User from "~~/models/user/user";
 
@@ -10,6 +11,33 @@ export class TodoService {
     const config = useRuntimeConfig();
     TodoService.API_URL = config.public.apiBaseUrl;
     TodoService.BASE_URL = TodoService.API_URL + "/todos";
+  }
+
+  public async getPage(
+    page: number,
+    filterBy: string[],
+    tags?: number[],
+    sort?: string
+  ): Promise<ApiResponse<Todo>> {
+    const sortBy = sort || "dueAt";
+    const searchParams = new URLSearchParams({
+      page: String(page),
+      size: String(5),
+      sortBy: sortBy,
+    });
+    filterBy.forEach((filter) => searchParams.append("filterBy", filter));
+    tags?.forEach((tag) => searchParams.append("tags", String(tag)));
+    let url = TodoService.BASE_URL + "/get?" + searchParams;
+
+    let apiResponse: ApiResponse<Todo>;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    apiResponse = await response.json();
+    return apiResponse;
   }
 
   public async getTodoById(todoId: number) {

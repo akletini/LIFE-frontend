@@ -19,9 +19,7 @@ import { ApiResponse } from "../../models/apiResponse";
 import Chore from "~~/models/chore/chore";
 const choreStore = useChoreStore();
 const choreService = await choreStore.getService();
-const response: ApiResponse<Chore> = await choreService.getChorePage(0, [
-  "active",
-]);
+const response: ApiResponse<Chore> = await choreService.getPage(0, ["active"]);
 const page = response.data.page;
 const pageRef = ref(page);
 choreStore.setCurrentPage(page);
