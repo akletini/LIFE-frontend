@@ -154,7 +154,7 @@ const intervalUnit = ref(chore?.interval?.unit);
 async function formSubmit() {
   chore.title = title.value;
   chore.description = description.value;
-  chore.duration = Number(description.value);
+  chore.duration = Number(duration.value);
   chore.startDate = dateUtils.getGermanDate(startDate.value);
   chore.active = isActive.value;
   chore.shiftInterval = shiftInterval.value;

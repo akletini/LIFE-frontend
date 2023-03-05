@@ -69,7 +69,7 @@
                     <span class="sr-only">Open user menu</span>
                     <img
                       class="w-8 h-8 rounded-full"
-                      :src="currentUser.imageUrl"
+                      :src="currentUser?.imageUrl"
                       alt="user photo"
                     />
                   </button>
