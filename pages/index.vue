@@ -48,20 +48,18 @@ if (!token) {
 } else {
   const sessionUser: any = token.user;
   userByEmail = await userService.getUserByEmail(sessionUser.email);
+  const tokenContainer: TokenContainer = new TokenContainer(
+    String(token.accessToken),
+    dateUtils.getCurrentDateTime(new Date(Date.now())),
+    String(token.refreshToken) || null
+  );
   if (userByEmail === undefined) {
     // New user
-    const tokenContainer: TokenContainer = new TokenContainer(
-      String(token.accessToken),
-      dateUtils.getCurrentDateTime(new Date(Date.now())),
-      String(token.refreshToken) || null
-    );
-
     const user: User = new User();
     user.email = sessionUser?.email || "";
     user.name = sessionUser?.name || "";
     user.imageUrl = sessionUser?.image || null;
     user.tokenContainer = tokenContainer;
-    // Change logic here
     user.password = "";
     user.authProvider =
       sessionUser?.image && sessionUser.image.includes("google")
@@ -72,6 +70,10 @@ if (!token) {
     localStorage.setItem("currentUserId", String(addedUser.id));
   } else {
     // if the user logs in but already exists and the local storage is empty
+    if (tokenContainer.refreshToken !== null) {
+      userByEmail.tokenContainer = tokenContainer;
+      await userService.updateUser(userByEmail);
+    }
     localStorage.setItem("currentUserId", String(userByEmail.id));
   }
 }
