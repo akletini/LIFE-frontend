@@ -79,7 +79,7 @@
           </nav>
         </header>
         <div
-          class="justify-between my-1 lg:absolute lg:right-1 w-auto bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
+          class="justify-between z-50 my-1 lg:absolute lg:right-1 w-auto bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
           id="dropdown-user"
           v-if="userInfoVisible"
         >

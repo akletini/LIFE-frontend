@@ -2,12 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-gray-600;
-  height: 100%;
-}
-
 @layer components {
+  body {
+    @apply bg-gray-600;
+    height: 100%;
+  }
+
+  input {
+    @apply bg-gray-50;
+  }
+
+  textarea {
+    @apply bg-gray-50;
+  }
+  .table :where(tbody th, tbody td) {
+    @apply bg-gray-700 bg-opacity-[1];
+  }
+
+  .table :where(thead, tfoot) :where(th, td) {
+    --tw-bg-opacity: 1;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    @apply bg-gray-800;
+  }
+
+  h3 {
+    @apply text-center text-4xl py-4 font-bold mb-4;
+  }
+
   .btn {
     @apply bg-[#12b488] text-white px-3 py-2 rounded-md text-sm;
   }
@@ -27,7 +51,7 @@ body {
 
 *::-webkit-scrollbar {
   width: 8px;
-  background-color: #3A414D;
+  background-color: #3a414d;
 }
 
 *::-webkit-scrollbar-track {
@@ -36,7 +60,7 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #868A92;
+  background-color: #868a92;
   border: 3px solid var(--primary);
 }
 
@@ -44,4 +68,3 @@ body {
   scrollbar-width: thin;
   scrollbar-color: var(--secondary) var(--primary);
 }
-

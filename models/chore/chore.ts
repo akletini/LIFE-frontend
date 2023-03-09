@@ -8,6 +8,7 @@ export class Chore {
   public dueAt?: string;
   public createdAt?: string;
   public startDate?: string;
+  public lastCompleted?: string;
   public active?: boolean;
   public shiftInterval?: boolean;
   public duration?: number;

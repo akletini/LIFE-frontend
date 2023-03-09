@@ -9,23 +9,23 @@
       <NuxtLink to="/"><h3 class="sidebar-entry-root">Home</h3></NuxtLink>
     </div>
     <div class="mb-10">
-      <NuxtLink to="/todos"><h3 class="sidebar-entry-root">Todos</h3></NuxtLink>
+      <NuxtLink to="todos"><h3 class="sidebar-entry-root">Todos</h3></NuxtLink>
     </div>
     <div class="mb-10">
-      <NuxtLink to="/chores"
+      <NuxtLink to="chores"
         ><h3 class="sidebar-entry-root">Chores</h3></NuxtLink
       >
     </div>
     <div class="mb-10">
-      <NuxtLink to="/docs"><h3 class="sidebar-entry-root">Docs</h3></NuxtLink>
+      <NuxtLink to="docs"><h3 class="sidebar-entry-root">Docs</h3></NuxtLink>
     </div>
   </div>
 </template>
 
 <script setup></script>
 
-<style scoped>
-.router-link-exact-active {
+<style>
+.nuxt-link-exact-active {
   color: #16a34a; /* green-600 */
 }
 </style>

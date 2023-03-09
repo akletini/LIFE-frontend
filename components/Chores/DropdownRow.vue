@@ -2,14 +2,14 @@ import ChoreService from '../../services/chore/ChoreService';
 <template>
   <!-- Dropdown row -->
   <div
-    class="grid grid-cols-1 grid-rows-8 md:mb-6 lg:grid-cols-4 lg:grid-rows-1 xl:grid-cols-6 2xl:grid-cols-8"
+    class="grid grid-cols-1 grid-rows-8 md:mb-6 lg:grid-cols-4 lg:grid-rows-1 xl:grid-cols-6 2xl:grid-cols-8 items-center"
   >
     <div class="xl:col-span-2 xl:row-start-1 xl:row-end-1 2xl:col-span-5">
       <!-- empty div for spacing -->
     </div>
     <NuxtLink
       to="/chores/newChore"
-      class="border rounded-md row-span-2 py-3 lg:row-start-1 lg:row-end-1 flex justify-center hover:bg-green-700 my-3"
+      class="border rounded-md row-span-2 lg:row-start-1 lg:row-end-1 flex justify-center hover:bg-green-700 py-2"
     >
       <button>New Chore</button>
     </NuxtLink>
@@ -17,10 +17,10 @@ import ChoreService from '../../services/chore/ChoreService';
     <div
       class="flex gap-4 row-span-2 py-3 lg:row-start-1 lg:row-end-1 lg:justify-center"
     >
-      <div class="flex-col">
+      <div class="max-lg:flex flex-col flex-grow lg:flex-grow-0">
         <button
           @click="toggleFilterDropdown()"
-          class="bg-gray-50 text-gray-700 border rounded-md py-4 px-4"
+          class="bg-gray-50 text-gray-700 border rounded-md py-2 px-4"
         >
           Filter
           <i class="ml-2 material-icons text-sm">expand_more</i>
@@ -28,7 +28,7 @@ import ChoreService from '../../services/chore/ChoreService';
         <div
           v-if="showFilterDropdown"
           id="myDropdown"
-          class="dropdown-content grid-rows-6"
+          class="dropdown-content grid-rows-6 lg:absolute"
         >
           <div class="flex items-center hover:bg-gray-200">
             <input
@@ -57,10 +57,10 @@ import ChoreService from '../../services/chore/ChoreService';
     <div
       class="flex gap-4 row-span-2 py-3 lg:row-start-1 lg:row-end-1 lg:justify-center"
     >
-      <div class="flex-col">
+      <div class="max-lg:flex flex-col flex-grow lg:flex-grow-0">
         <button
           @click="toggleSortDropdown()"
-          class="bg-gray-50 text-gray-700 border rounded-md py-4 px-4"
+          class="bg-gray-50 text-gray-700 border rounded-md py-2 px-4"
         >
           Sort by: <span class="font-bold">{{ sort }}</span>
           <i class="ml-2 material-icons text-sm">expand_more</i>
@@ -68,7 +68,7 @@ import ChoreService from '../../services/chore/ChoreService';
         <div
           v-if="showSortDropdown"
           id="myDropdown"
-          class="absolute bg-gray-50 grid-rows-6"
+          class="bg-gray-50 grid-rows-6 lg:absolute"
         >
           <button
             class="flex text-black py-4 px-4 hover:bg-gray-200"
@@ -147,7 +147,6 @@ async function toggleFilterDropdown() {
 <style scoped>
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
-  position: absolute;
   background-color: #f1f1f1;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
