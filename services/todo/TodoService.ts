@@ -32,9 +32,10 @@ export class TodoService {
     let apiResponse: ApiResponse<Todo>;
     const response = await fetch(url, {
       method: "GET",
-      headers: {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-Type": "application/json",
-      },
+      }),
     });
     apiResponse = await response.json();
     return apiResponse;
@@ -45,9 +46,10 @@ export class TodoService {
     let todo: Todo = new Todo();
     const response = await fetch(url, {
       method: "GET",
-      headers: {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-Type": "application/json",
-      },
+      }),
     })
       .then((response) => {
         if (response.ok) {
@@ -70,9 +72,10 @@ export class TodoService {
     let todoArray: Todo[] = [];
     await fetch(url, {
       method: "GET",
-      headers: {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-Type": "application/json",
-      },
+      }),
     })
       .then((response) => {
         if (response.ok) {
@@ -96,9 +99,10 @@ export class TodoService {
     const response = await fetch(url, {
       method: "POST",
       body: JSON.stringify(todo),
-      headers: {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-Type": "application/json",
-      },
+      }),
     })
       .then((response) => {
         if (response.ok) {
@@ -122,9 +126,10 @@ export class TodoService {
     const response = await fetch(url, {
       method: "PUT",
       body: JSON.stringify(todo),
-      headers: {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-Type": "application/json",
-      },
+      }),
     })
       .then((response) => {
         if (response.ok) {
@@ -148,9 +153,10 @@ export class TodoService {
     const response = await fetch(url, {
       method: "DELETE",
       body: JSON.stringify(todo),
-      headers: {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-Type": "application/json",
-      },
+      }),
     })
       .then((response) => {
         if (response.ok) {

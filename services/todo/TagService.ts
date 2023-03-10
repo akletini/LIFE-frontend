@@ -15,9 +15,10 @@ export class TagService {
     let tag: Tag = new Tag();
     const response = await fetch(url, {
       method: "GET",
-      headers: {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-Type": "application/json",
-      },
+      }),
     })
       .then((response) => {
         if (response.ok) {
@@ -41,9 +42,10 @@ export class TagService {
     let tagArray: Tag[] = [];
     const response = await fetch(url, {
       method: "GET",
-      headers: {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-Type": "application/json",
-      },
+      }),
     })
       .then((response) => {
         if (response.ok) {
@@ -67,9 +69,10 @@ export class TagService {
     const response = await fetch(url, {
       method: "POST",
       body: JSON.stringify(tag),
-      headers: {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-Type": "application/json",
-      },
+      }),
     })
       .then((response) => {
         if (response.ok) {
@@ -93,9 +96,10 @@ export class TagService {
     const response = await fetch(url, {
       method: "PUT",
       body: JSON.stringify(tag),
-      headers: {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-Type": "application/json",
-      },
+      }),
     })
       .then((response) => {
         if (response.ok) {
@@ -118,9 +122,10 @@ export class TagService {
     let url = TagService.BASE_URL + "/delete/" + tagId;
     const response = await fetch(url, {
       method: "DELETE",
-      headers: {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-Type": "application/json",
-      },
+      }),
     })
       .then((response) => {
         if (response.ok) {

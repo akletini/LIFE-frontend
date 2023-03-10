@@ -30,9 +30,10 @@ export class ChoreService {
     let apiResponse: ApiResponse<Chore>;
     const response = await fetch(url, {
       method: "GET",
-      headers: {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-Type": "application/json",
-      },
+      }),
     });
     apiResponse = await response.json();
     return apiResponse;
@@ -43,9 +44,10 @@ export class ChoreService {
     let chore = new Chore();
     let response = await fetch(url, {
       method: "GET",
-      headers: {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-Type": "application/json",
-      },
+      }),
     })
       .then((response) => response.json())
       .then((result) => (chore = result));
@@ -60,9 +62,10 @@ export class ChoreService {
     let response = await fetch(url, {
       method: "POST",
       body: JSON.stringify(chore),
-      headers: {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-Type": "application/json",
-      },
+      }),
     })
       .then((response) => {
         if (response.ok) {
@@ -91,9 +94,10 @@ export class ChoreService {
     let response = await fetch(url, {
       method: "PUT",
       body: JSON.stringify(chore),
-      headers: {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-Type": "application/json",
-      },
+      }),
     })
       .then((response) => {
         if (response.ok) {
@@ -120,9 +124,10 @@ export class ChoreService {
     let response = await fetch(url, {
       method: "PUT",
       body: JSON.stringify(chore),
-      headers: {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-Type": "application/json",
-      },
+      }),
     })
       .then((response) => response.json())
       .then((result) => (chore = result));
@@ -135,9 +140,10 @@ export class ChoreService {
     let response = await fetch(url, {
       method: "DELETE",
       body: JSON.stringify(chore),
-      headers: {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-Type": "application/json",
-      },
+      }),
     }).then((response) => {
       if (!(response.status == 204)) {
         return response.json();
