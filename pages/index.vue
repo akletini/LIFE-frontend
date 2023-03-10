@@ -19,7 +19,7 @@ const dateUtils: DateUtils = new DateUtils();
 const headers = useRequestHeaders(["cookie"]) as HeadersInit;
 const { data } = await useFetch("/api/auth/token", { headers });
 const token = data.value;
-let userByEmail;
+let userByEmail, tokenContainer;
 if (!token) {
   // user is already logged in
   const currentUserId = localStorage.getItem("currentUserId");
@@ -27,15 +27,18 @@ if (!token) {
   useUserStore().update(currentUser);
 } else {
   const sessionUser: any = token.user;
-  userByEmail = await userService.getUserByEmail(sessionUser.email);
-  const tokenContainer: TokenContainer = new TokenContainer(
+  const currentJwt = localStorage.getItem("accessToken");
+  if (currentJwt !== "undefined" && currentJwt !== null) {
+    userByEmail = await userService.getUserByEmail(sessionUser.email);
+  }
+  tokenContainer = new TokenContainer(
     String(token.accessToken),
     dateUtils.getCurrentDateTime(new Date(Date.now())),
     String(token.refreshToken) || null
   );
   if (userByEmail === undefined) {
     // New user
-    const user: User = new User();
+    const user = new User();
     user.email = sessionUser?.email || "";
     user.name = sessionUser?.name || "";
     user.imageUrl = sessionUser?.image || null;
@@ -46,11 +49,13 @@ if (!token) {
         ? User.AuthProvider.GOOGLE
         : User.AuthProvider.CREDENTIALS;
 
-    const addedUser = await userService.addUser(user);
+    const addedUser = await userService.register(user);
+    debugger;
     localStorage.setItem("currentUserId", String(addedUser.id));
+    localStorage.setItem("accessToken", addedUser.jwtToken);
   } else {
     // if the user logs in but already exists and the local storage is empty
-    if (tokenContainer.refreshToken !== null) {
+    if (tokenContainer?.refreshToken !== null) {
       userByEmail.tokenContainer = tokenContainer;
       await userService.updateUser(userByEmail);
     }

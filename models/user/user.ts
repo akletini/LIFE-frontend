@@ -1,4 +1,5 @@
-import TokenContainer from "./tokenContainer"
+import TokenContainer from "./tokenContainer";
+
 export class User {
   public id?: number | undefined;
   public name!: string;
@@ -8,6 +9,7 @@ export class User {
   public loggedIn: boolean = false;
   public authProvider!: User.AuthProvider;
   public tokenContainer?: TokenContainer;
+  public jwtToken!: string;
 
   constructor() {}
 }
