@@ -35,8 +35,14 @@ export class ChoreService {
         "Content-Type": "application/json",
       }),
     });
-    apiResponse = await response.json();
-    return apiResponse;
+    if (response.ok) {
+      apiResponse = await response.json();
+      return apiResponse;
+    } else if (response.status == 403) {
+      console.log("Unauthorized access, logging out");
+      logout(ChoreService.ASSIGNED_USER);
+    }
+    throw new Error();
   }
 
   public async getChoreById(choreId: number) {
@@ -49,7 +55,14 @@ export class ChoreService {
         "Content-Type": "application/json",
       }),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else if (response.status == 403) {
+          console.log("Unauthorized access, logging out");
+          logout();
+        }
+      })
       .then((result) => (chore = result));
     return chore;
   }
@@ -70,6 +83,9 @@ export class ChoreService {
       .then((response) => {
         if (response.ok) {
           responseOk = true;
+        } else if (response.status == 403) {
+          console.log("Unauthorized access, logging out");
+          logout();
         }
         return response.json();
       })
@@ -102,6 +118,9 @@ export class ChoreService {
       .then((response) => {
         if (response.ok) {
           responseOk = true;
+        } else if (response.status == 403) {
+          console.log("Unauthorized access, logging out");
+          logout();
         }
         return response.json();
       })
@@ -129,7 +148,14 @@ export class ChoreService {
         "Content-Type": "application/json",
       }),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else if (response.status == 403) {
+          console.log("Unauthorized access, logging out");
+          logout();
+        }
+      })
       .then((result) => (chore = result));
     return response;
   }
@@ -145,7 +171,10 @@ export class ChoreService {
         "Content-Type": "application/json",
       }),
     }).then((response) => {
-      if (!(response.status == 204)) {
+      if (response.status == 403) {
+        console.log("Unauthorized access, logging out");
+        logout();
+      } else if (!(response.status == 204)) {
         return response.json();
       }
     });

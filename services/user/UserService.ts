@@ -25,6 +25,8 @@ export class UserService {
       .then((response) => {
         if (response.ok) {
           return response.json();
+        } else if (response.status == 403) {
+          console.log("Unauthorized access");
         } else {
           console.log("Fetch error in getUserById()");
         }
@@ -51,6 +53,9 @@ export class UserService {
       .then((response) => {
         if (response.ok && response.body) {
           return response.json();
+        } else if (response.status == 403) {
+          console.log("Unauthorized access");
+          logout(user);
         } else {
           console.log("Fetch error in getUserByEmail()");
         }
@@ -77,6 +82,9 @@ export class UserService {
       .then((response) => {
         if (response.ok) {
           return response.json();
+        } else if (response.status == 403) {
+          console.log("Unauthorized access, logging out");
+          logout(user);
         } else {
           console.log("Fetch error in addUser()");
         }
@@ -180,6 +188,9 @@ export class UserService {
       .then((response) => {
         if (response.ok) {
           return response.json();
+        } else if (response.status == 403) {
+          console.log("Unauthorized access, logging out");
+          logout(user);
         } else {
           console.log("Fetch error in updateUser()");
         }

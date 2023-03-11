@@ -37,8 +37,14 @@ export class TodoService {
         "Content-Type": "application/json",
       }),
     });
-    apiResponse = await response.json();
-    return apiResponse;
+    if (response.ok) {
+      apiResponse = await response.json();
+      return apiResponse;
+    } else if (response.status == 403) {
+      console.log("Unauthorized access, logging out");
+      logout(TodoService.ASSIGNED_USER);
+    }
+    throw new Error();
   }
 
   public async getTodoById(todoId: number) {
@@ -54,6 +60,9 @@ export class TodoService {
       .then((response) => {
         if (response.ok) {
           return response.json();
+        } else if (response.status == 403) {
+          console.log("Unauthorized access, logging out");
+          logout(TodoService.ASSIGNED_USER);
         } else {
           console.log("Fetch error in getTodoById()");
         }
@@ -80,6 +89,9 @@ export class TodoService {
       .then((response) => {
         if (response.ok) {
           return response.json();
+        } else if (response.status == 403) {
+          console.log("Unauthorized access, logging out");
+          logout(TodoService.ASSIGNED_USER);
         } else {
           console.log("Fetch error in getAllTodos()");
         }
@@ -107,6 +119,9 @@ export class TodoService {
       .then((response) => {
         if (response.ok) {
           return response.json();
+        } else if (response.status == 403) {
+          console.log("Unauthorized access, logging out");
+          logout(TodoService.ASSIGNED_USER);
         } else {
           console.log("Fetch error in addTodo()");
         }
@@ -134,6 +149,9 @@ export class TodoService {
       .then((response) => {
         if (response.ok) {
           return response.json();
+        } else if (response.status == 403) {
+          console.log("Unauthorized access, logging out");
+          logout(TodoService.ASSIGNED_USER);
         } else {
           console.log("Fetch error in updateTodo()");
         }
@@ -161,6 +179,9 @@ export class TodoService {
       .then((response) => {
         if (response.ok) {
           return response.json();
+        } else if (response.status == 403) {
+          console.log("Unauthorized access, logging out");
+          logout(TodoService.ASSIGNED_USER);
         } else {
           console.log("Fetch error in deleteTodo()");
         }
