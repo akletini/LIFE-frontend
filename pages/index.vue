@@ -50,7 +50,6 @@ if (!token) {
         : User.AuthProvider.CREDENTIALS;
 
     const addedUser = await userService.register(user);
-    debugger;
     localStorage.setItem("currentUserId", String(addedUser.id));
     localStorage.setItem("accessToken", addedUser.jwtToken);
   } else {

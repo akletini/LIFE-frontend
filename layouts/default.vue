@@ -104,7 +104,7 @@
               <a
                 class="block px-4 py-2 text-sm text-gray-300 bg-gray-700 hover:bg-gray-600 hover:text-gray-50"
                 role="menuitem"
-                @click="() => logout()"
+                @click="() => logout(currentUser)"
                 >Sign out</a
               >
             </li>
@@ -156,11 +156,6 @@ function onMouseMove(e: any) {
   if (percentage >= 15 && percentage <= 25) {
     resizeValue.value = Number(percentage.toFixed(2));
   }
-}
-
-async function logout() {
-  await userService.logout(currentUser);
-  signOut();
 }
 </script>
 

@@ -23,6 +23,9 @@ export class TagService {
       .then((response) => {
         if (response.ok) {
           return response.json();
+        } else if (response.status == 403) {
+          console.log("Unauthorized access, logging out");
+          logout();
         } else {
           console.log("Fetch error in getTagById()");
         }
@@ -50,6 +53,9 @@ export class TagService {
       .then((response) => {
         if (response.ok) {
           return response.json();
+        } else if (response.status == 403) {
+          console.log("Unauthorized access, logging out");
+          logout();
         } else {
           console.log("Fetch error in getAllTags()");
         }
@@ -77,6 +83,9 @@ export class TagService {
       .then((response) => {
         if (response.ok) {
           return response.json();
+        } else if (response.status == 403) {
+          console.log("Unauthorized access, logging out");
+          logout();
         } else {
           console.log("Fetch error in addTag()");
         }
@@ -104,6 +113,9 @@ export class TagService {
       .then((response) => {
         if (response.ok) {
           return response.json();
+        } else if (response.status == 403) {
+          console.log("Unauthorized access, logging out");
+          logout();
         } else {
           console.log("Fetch error in updateTag()");
         }
@@ -130,6 +142,9 @@ export class TagService {
       .then((response) => {
         if (response.ok) {
           return response.json();
+        } else if (response.status == 403) {
+          console.log("Unauthorized access, logging out");
+          logout();
         } else {
           console.log("Fetch error in deleteTag()");
         }
