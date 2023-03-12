@@ -16,7 +16,7 @@
     @apply bg-gray-50;
   }
   .table :where(tbody th, tbody td) {
-    @apply bg-gray-700 bg-opacity-[1];
+    @apply bg-gray-700 bg-opacity-[1] text-left;
   }
 
   .table :where(thead, tfoot) :where(th, td) {
@@ -25,7 +25,7 @@
     line-height: 1rem;
     font-weight: 700;
     text-transform: uppercase;
-    @apply bg-gray-800;
+    @apply bg-gray-800 text-left;
   }
 
   h3 {

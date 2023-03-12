@@ -31,7 +31,7 @@ import { useTodoStore } from "~~/stores/todo/TodoStore";
 
 const todoStore = useTodoStore();
 const todoService = await todoStore.getService();
-const page = (await todoService.getPage(0, [])).data.page;
+const page = (await todoService.getPage(0, ["open"])).data.page;
 const todos = page.content;
 </script>
 
