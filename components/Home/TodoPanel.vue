@@ -15,7 +15,7 @@
         <tr v-for="(todo, index) in todos" class="hover">
           <th>{{ index + 1 }}</th>
           <td>{{ todo.title }}</td>
-          <td>{{ todo.tag }}</td>
+          <td>{{ todo.tag?.name }}</td>
           <td>
             {{ todo.dueAt }}
           </td>
