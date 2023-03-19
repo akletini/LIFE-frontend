@@ -88,7 +88,7 @@ import mySignInHandler from '../server/api/auth/signin[]';
                 type="submit"
                 @click="
                   () =>
-                    signIn('google', { callbackUrl: 'http://localhost:3000/' })
+                    signIn('google', { callbackUrl: config.public.clientUrl })
                 "
                 class="flex flex-row justify-center w-full border items-center text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
@@ -140,6 +140,8 @@ definePageMeta({
   auth: false,
 });
 
+const config = useRuntimeConfig();
+
 const routeName = useRoute().fullPath.toString();
 if (routeName! !== "/login?email=&password=") {
   useRouter().push("/login?email=&password=");
@@ -147,7 +149,7 @@ if (routeName! !== "/login?email=&password=") {
 const { status, signIn } = useSession();
 onMounted(() => {
   if (status.value === "authenticated") {
-    signIn("google", { callbackUrl: "http://localhost:3000/" });
+    signIn("google", { callbackUrl: config.public.clientUrl });
   }
 });
 </script>
