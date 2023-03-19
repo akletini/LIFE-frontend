@@ -3,12 +3,12 @@
     <li
       class="flex items-center text-lg justify-center sm:justify-start px-8 sm:col-span-4"
     >
-      <NuxtLink to="/">{{ chore.title }}</NuxtLink>
+      <NuxtLink  :to="'/chores/_' + chore.id">{{ chore.title }}</NuxtLink>
     </li>
     <li
       class="row-start-2 row-end-2 col-start-1 col-end-1 text-center flex items-center justify-center lg:row-span-1 lg:row-start-1 lg-row-end-1 lg:col-start-5 lg:col-end-5"
     >
-      <NuxtLink to="/"><span class="rounded-lg py-2 px-3"> </span></NuxtLink>
+      <span class="rounded-lg py-2 px-3"> </span>
     </li>
     <li
       class="flex items-center justify-center row-start-3 row-end-3 sm:row-start-2 sm:row-end-2 sm:col-start-2 sm:col-end-2 lg:row-span-1 lg:row-start-1 lg-row-end-1 lg:col-start-6 lg:col-end-6"
